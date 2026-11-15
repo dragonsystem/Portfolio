@@ -1,7 +1,7 @@
 # Ryu Kaneko — Portfolio
 
 UI/UX デザイナーが、AI の技術的進歩を体感・理解するために行った iOS / macOS アプリ個人開発のポートフォリオです。  
-→ [プロフィール詳細](./profile.md)
+→ [プロフィール詳細](./profile.md)　｜　[連絡先](./profile.md#連絡先)
 
 ---
 
@@ -23,6 +23,20 @@ UI/UX デザイナーが、AI の技術的進歩を体感・理解するため�
 | [SUTRA](./sutra/) | デザイントークンと連動する UI コンポーネント・ワイヤーフレーム生成 | TypeScript / Figma Plugin API / Variables / esbuild / Vitest | [Figma Community 公開中](https://www.figma.com/community/plugin/1652926105517784439/sutra)（React 出力を開発中） |
 | [SATORI](./satori/) | 選択したフレームの構造を AI で解析し、ワンクリックで直す | TypeScript / Figma Plugin API / Gemini API | 組織内リリース |
 | [SAKSHI](./sakshi/) | デザインがデザインシステムに沿っているかを監査する | TypeScript / Figma Plugin API / Variables / Gemini API | 組織内リリース |
+| [OOUI プラグイン群](./ooui/)（Modeler / Modeler Pro / View View） | OOUI のモデリングからワイヤーフレーム生成までを Figma 上でつなぐ 3 本 | TypeScript / Figma Plugin API / FigJam / Gemini API / Vite | 組織内リリース |
+
+---
+
+## 設計の特徴：ツールの中から AI を呼ぶ
+
+AI と別の画面で対話するのではなく、**作業しているツールの中から直接 AI を呼び出せる**ようにしている。
+対象は TATTVA・SATORI・SAKSHI・Modeler・Modeler Pro の 5 本（Gemini API を使用）。
+
+- **サーバーを持たない**：アプリやプラグインから Gemini API を直接呼ぶ。開発者がサーバーを運用する必要がなく、配布しやすい
+- **API キーは利用者のもの**：各自のキーを設定画面で登録し、端末の中だけに保存する（macOS は Keychain、Figma は clientStorage）
+- **AI に作業中のデータを渡す**：選んだフレームの画像とレイヤー構造、キャンバス上のモデルなどを渡すので、説明を書き写さなくても文脈をふまえた結果が返る
+- **結果はツールの中で使える**：AI の出力は決まった形式（JSON）で受け取り、キャンバスへの描画や修正、ファイルの保存にそのままつなげる
+- **判断は人に残す**：修正や補完は、プレビューで確認してから適用する。SAKSHI と Modeler Pro では、AI を使うかどうか自体も選べる
 
 ---
 
@@ -35,7 +49,7 @@ UI/UX デザイナーが、AI の技術的進歩を体感・理解するため�
 **AI を活用したプロダクト開発**
 - AI 向けの開発計画書・チケット設計（要件・完了条件・検証値の定義）
 - 実機検証とフィードバックによる品質の作り込み
-- 成果物: iOS アプリ 3 本・macOS アプリ 1 本を App Store でリリース（SwiftUI / SwiftData / MapKit / CloudKit / Vision / Gemini API 等）、Figma プラグイン 3 本（Community 公開 1 本・組織内リリース 2 本）
+- 成果物: iOS アプリ 3 本・macOS アプリ 1 本を App Store でリリース（SwiftUI / SwiftData / MapKit / CloudKit / Vision / Gemini API 等）、Figma プラグイン 6 本（Community 公開 1 本・組織内リリース 5 本）
 
 ---
 

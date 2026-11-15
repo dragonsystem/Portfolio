@@ -13,7 +13,7 @@ UI/UX デザイナーとして20年以上のキャリアを持つ。
 | **デザインマネジメント** | デザインチームの立ち上げ・マネージメント |
 | **AI を活用したプロダクト開発** | AI 向けの開発計画書・チケット設計（要件・完了条件・検証値の定義）、実機検証とフィードバックによる品質の作り込み |
 
-AI を活用した開発の成果物として、iOS アプリ 3 本・macOS アプリ 1 本を App Store でリリース（SwiftUI / SwiftData / MapKit / CloudKit / Gemini API 等）。Figma プラグインを 3 本開発（Community 公開 1 本・組織内リリース 2 本）。
+AI を活用した開発の成果物として、iOS アプリ 3 本・macOS アプリ 1 本を App Store でリリース（SwiftUI / SwiftData / MapKit / CloudKit / Gemini API 等）。Figma プラグインを 6 本開発（Community 公開 1 本・組織内リリース 5 本）。
 
 ---
 
@@ -44,3 +44,9 @@ AI を活用した開発の成果物として、iOS アプリ 3 本・macOS ア�
 
 AI の急速な技術的進歩を単に観察するだけでなく、実際に使って体感・理解することを目的として iOS 個人開発を開始した。
 デザインの知識を活かしつつ、AI を積極的に活用することで Swift/SwiftUI によるアプリ開発を実現している。
+
+---
+
+## 連絡先
+
+- メール: rashers.basho_6a [at] icloud.com（[at] を @ に置き換えてください）

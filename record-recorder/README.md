@@ -58,3 +58,4 @@
 ## リンク
 
 - [App Store](https://apps.apple.com/us/app/record-recorder/id6766056660)
+- [ソースコード](https://github.com/dragonsystem/record-recorder)（非公開リポジトリ。閲覧をご希望の場合は[連絡先](../profile.md#連絡先)までご連絡ください）
