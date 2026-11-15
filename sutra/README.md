@@ -70,7 +70,12 @@
 
 ## スクリーンショット
 
-> *(追加予定)*
+Figma Community に掲載している画像です。SUTRA で生成したコンポーネント群を、ライト / ダークの 2 つのテーマで表示しています。色は Figma Variables に紐づいているため、テーマを切り替えるだけで配置済みのコンポーネントも追従します。
+
+<p>
+  <img src="./images/components_light.jpg" width="49%" alt="SUTRA で生成したコンポーネント（ライトテーマ）">
+  <img src="./images/components_dark.jpg" width="49%" alt="SUTRA で生成したコンポーネント（ダークテーマ）">
+</p>
 
 ---
 
