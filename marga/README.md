@@ -61,4 +61,3 @@
 ## リンク
 
 - [App Store](https://apps.apple.com/us/app/marga/id6763526779)
-- [プライバシーポリシー](https://dragonsystem.net/privacypolicy)

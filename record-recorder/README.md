@@ -58,4 +58,3 @@
 ## リンク
 
 - [App Store](https://apps.apple.com/us/app/record-recorder/id6766056660)
-- [プライバシーポリシー](https://dragonsystem.net/privacypolicy)

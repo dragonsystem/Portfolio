@@ -63,4 +63,3 @@
 ## リンク
 
 - [App Store](https://apps.apple.com/us/app/suchi-compass-beeline-nav/id6792340914)
-- [プライバシーポリシー](https://dragonsystem.net/privacypolicy)

@@ -50,4 +50,3 @@
 ## リンク
 
 - [App Store]([App Store URL])
-- [プライバシーポリシー](https://dragonsystem.net/privacypolicy)
