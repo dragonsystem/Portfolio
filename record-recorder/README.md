@@ -2,7 +2,7 @@
 
 > レコードコレクター向けコレクション管理 iOS アプリ
 
-[![App Store](https://img.shields.io/badge/App_Store-リリース済み-blue?logo=apple)](https://apps.apple.com)
+[![App Store](https://img.shields.io/badge/App_Store-リリース済み-blue?logo=apple)](https://apps.apple.com/us/app/record-recorder/id6766056660)
 
 ---
 
@@ -12,7 +12,7 @@
 ジャケットを撮影するだけで、OCR・バーコード認識から Discogs API を通じてアルバム情報を自動取得できる。
 
 **開発期間**: 2026年5月（MVP）〜 継続中  
-**開発形態**: 個人開発（1人）  
+**開発形態**: 個人開発（AI を活用）  
 **対応OS**: iOS 17+
 
 ---
@@ -57,5 +57,5 @@
 
 ## リンク
 
-- [App Store]() *(リンク追加予定)*
+- [App Store](https://apps.apple.com/us/app/record-recorder/id6766056660)
 - [プライバシーポリシー](https://dragonsystem.net/privacypolicy)
