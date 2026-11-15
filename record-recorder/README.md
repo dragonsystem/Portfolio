@@ -26,6 +26,7 @@
 | **iCloud 同期** | SwiftData + CloudKit で複数デバイス間を自動同期 |
 | **統計表示** | ジャンル・年代の分布をグラフで可視化（SwiftCharts） |
 | **CSV 入出力** | コレクションのエクスポート・インポート |
+| **Apple Music 連携** | レコードの詳細画面から、同じ作品を Apple Music で検索 |
 
 ---
 
@@ -51,7 +52,15 @@
 
 ## スクリーンショット
 
-> *(追加予定)*
+App Store に掲載している画像です。
+
+<p>
+  <img src="./images/01_collection.jpg" width="180" alt="コレクションを美しく一覧に">
+  <img src="./images/02_auto_input.jpg" width="180" alt="撮影するだけで作品情報を自動取得">
+  <img src="./images/03_archive.jpg" width="180" alt="コレクターが求める詳細なアーカイブ">
+  <img src="./images/04_filter.jpg" width="180" alt="年代やジャンルで瞬時に絞り込み">
+  <img src="./images/05_apple_music.jpg" width="180" alt="レコード棚から Apple Music へ直結">
+</p>
 
 ---
 

@@ -57,7 +57,18 @@ Mood 画像・Structure 画像・Context / Intent のテキストを入力する
 
 ## スクリーンショット
 
-> *(追加予定)*
+Mac App Store に掲載している画像です。
+
+<img src="./images/01_overview.jpg" width="100%" alt="インスピレーションを、実装可能な設計仕様へ">
+
+<p>
+  <img src="./images/02_input.jpg" width="49%" alt="Mood と Structure から、AI が意図を抽出">
+  <img src="./images/03_diagram.jpg" width="49%" alt="ダイアグラムをその場で描画">
+</p>
+<p>
+  <img src="./images/04_design_md.jpg" width="49%" alt="数値まで定義した DESIGN.md を出力">
+  <img src="./images/05_interface.jpg" width="49%" alt="macOS ネイティブの操作画面">
+</p>
 
 ---
 

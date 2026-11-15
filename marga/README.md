@@ -54,7 +54,20 @@
 
 ## スクリーンショット
 
-> *(追加予定)*
+App Store に掲載している画像です。
+
+<p>
+  <img src="./images/01_map.jpg" width="180" alt="MAP：走った道を、そのまま記録する">
+  <img src="./images/02_rides.jpg" width="180" alt="RIDES：ルート・距離・時間を自動で記録">
+  <img src="./images/03_wishlist.jpg" width="180" alt="WISHLIST：行きたい場所を地図で管理">
+  <img src="./images/04_fuel.jpg" width="180" alt="FUEL：レシートを撮るだけで給油記録">
+</p>
+
+**Apple Watch**
+
+<img src="./images/05_watch.png" width="180" alt="Apple Watch：記録の開始・停止">
+
+Watch の画面から、iPhone を取り出さずに記録の開始・停止ができる。
 
 ---
 
