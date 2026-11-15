@@ -1,0 +1,975 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ryu Kaneko — Portfolio</title>
+<meta name="description" content="ビジュアルデザインを学び、UI デザイナー、事業会社のインハウスのサービスデザイナーとして働いてきた金子龍のポートフォリオ。AI の理解を目的に個人開発したアプリと Figma プラグイン。">
+<meta property="og:title" content="Ryu Kaneko — Portfolio">
+<meta property="og:description" content="Visual / UI / Service Designer。個人開発したアプリと Figma プラグイン。">
+<meta property="og:type" content="website">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Geist / Zen Kaku Gothic New: SIL Open Font License 1.1 -->
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ===== Tokens ===== */
+:root{
+  --paper:#ffffff; --ink:#111111; --ink-2:#6b6b6b; --rule:#111111; --hair:#d6d6d6; --surface:#f3f3f3;
+  --display:"Geist", "Zen Kaku Gothic New", sans-serif;
+  --gothic:"Zen Kaku Gothic New", system-ui, sans-serif;
+  --gutter:clamp(16px, 3vw, 40px);
+  --col-gap:clamp(16px, 1.6vw, 24px);
+}
+@media (prefers-color-scheme: dark){
+  :root{ --paper:#0f0f0f; --ink:#f2f2f2; --ink-2:#8e8e8e; --rule:#f2f2f2; --hair:#3a3a3a; --surface:#1c1c1c; }
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:var(--gothic);font-size:1rem;line-height:1.7;
+  font-feature-settings:"palt";-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+img{display:block;max-width:100%;height:auto}
+ul,ol{list-style:none}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--col-gap);padding-inline:var(--gutter)}
+.label{font-size:.8125rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+.num{font-family:var(--display);font-variant-numeric:lining-nums tabular-nums}
+.skip{position:absolute;left:-999px}.skip:focus{left:16px;top:16px;background:var(--ink);color:var(--paper);padding:8px 16px;z-index:9}
+:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
+.ico{flex:none;border-radius:22.5%;filter:grayscale(1);transition:filter .2s}
+
+/* ===== Header ===== */
+.head{position:sticky;top:0;z-index:5;background:var(--paper);border-bottom:1px solid var(--rule)}
+.head nav{grid-column:7/13;display:flex;gap:24px;justify-content:flex-end}
+/* 表紙へ戻るリンク：表紙の「Portfolio」が年表の罫線の下へ沈むと、入れ替わりに帯の下端の罫線から上がってくる。
+   位置はスクロール量で決まり（JS が --p を 0〜1 で渡す）、表示しきったら止まる。隠れている間は押せない・フォーカスしない */
+.head .home{grid-column:1/7;justify-self:start;align-self:stretch;overflow:clip;font-family:var(--display);font-weight:800;font-size:1.125rem;letter-spacing:-.02em;line-height:1}
+.head .home:hover{text-decoration:none}
+.head .home span{display:block}
+html.js .head .home span{transform:translateY(calc((1 - var(--p,0)) * 110%))}
+html.js .head .home.off{visibility:hidden}
+.head .home:hover span,.head .home:focus-visible span{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:2px}
+.head a{text-decoration:none;display:inline-flex;align-items:center;min-height:44px}
+.head a:hover{text-decoration:underline;text-underline-offset:4px}
+
+/* ===== Cover ===== */
+.cover{position:relative;min-height:calc(100svh - 45px);display:flex;flex-direction:column;justify-content:space-between;padding-top:clamp(24px,4vw,48px)}
+.cover > .grid:first-child{flex:1;align-content:space-between}
+/* 肩書 → 名前 → 紹介文 を 1 つのまとまりとして読む */
+.cover .intro{grid-column:1/6}
+.cover .role{font-size:1rem;font-weight:500;line-height:1.5}
+.cover .name{font-size:1rem;color:var(--ink-2)}
+/* 「Portfolio」の下端を年表の罫線で切る */
+.cover h1{grid-column:1/13;font-family:var(--display);font-weight:800;font-size:min(340px,calc((100vw - 2 * var(--gutter)) / 4.42));line-height:.74;letter-spacing:-.035em;height:.6em;overflow:clip;margin-top:clamp(48px,10vh,120px);white-space:nowrap}
+.cover h1 span{display:inline-block}
+.cover .career{grid-column:7/13;align-self:start}
+.cover .summary{font-size:.875rem;color:var(--ink-2);margin-top:16px}
+.roles li{display:grid;grid-template-columns:3.5em 1fr auto;gap:16px;border-top:1px dashed var(--hair);padding:8px 0;font-size:.9375rem}
+.roles li b{font-weight:500}
+.timeline{border-top:1px solid var(--rule)}
+.timeline ol{grid-column:1/13;display:grid;grid-template-columns:minmax(6em,13fr) minmax(6.5em,5fr) repeat(3,minmax(4.6em,1fr)) minmax(10.5em,2fr) minmax(7em,2.6fr);padding-block:8px 24px}
+.timeline li{border-left:1px dashed var(--hair);padding:0 8px;font-size:.8125rem;line-height:1.5;min-width:0}
+.timeline li:first-child{border-left:0;padding-left:0}
+.timeline li .num{display:block;font-size:1rem}
+.timeline li span{display:block;color:var(--ink-2)}
+
+/* ===== Contents ===== */
+.contents{padding-block:clamp(64px,10vw,136px)}
+.sec-title{grid-column:1/13;display:flex;align-items:baseline;gap:16px;border-bottom:1px solid var(--rule);padding-bottom:16px}
+.sec-title h2{font-family:var(--display);font-weight:500;font-size:clamp(44px,7vw,112px);line-height:.9;letter-spacing:-.02em}
+.sec-title .ja{font-size:.9375rem;color:var(--ink-2)}
+.purpose{grid-column:1/13;margin-top:16px}
+.filters{grid-column:1/13;display:flex;flex-wrap:wrap;gap:8px;padding-block:16px}
+.filters button{font:inherit;font-size:.875rem;min-height:44px;background:none;color:var(--ink);border:1px solid var(--rule);
+  padding:8px 16px;border-radius:999px;cursor:pointer;transition:background-color .15s}
+.filters button:hover{background:var(--surface)}
+.filters button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.filters .count{margin-left:auto;align-self:center}
+.toc{grid-column:1/13}
+.toc li{border-bottom:1px dashed var(--hair)}
+.toc li[hidden]{display:none}
+.toc a{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--col-gap);align-items:center;
+  padding:16px 8px;text-decoration:none;transition:background-color .15s}
+/* 目次の番号：見開きの番号と同じく、右側を縦線で切る。選択すると切り口の側から現れ直す */
+.toc .no{grid-column:1/2;align-self:stretch;display:flex;align-items:center;justify-content:flex-end;border-right:1px solid var(--rule);clip-path:inset(-8px 0 -8px -8px);font-family:var(--display);font-weight:800;font-size:clamp(2rem,3.6vw,3.5rem);line-height:.8;letter-spacing:-.04em;color:var(--ink-2)}
+.toc .no > b{font-weight:inherit;margin-right:-.22em}
+.toc a:hover .no,.toc a:focus-visible .no{color:var(--ink)}
+.toc .t{grid-column:2/7;display:flex;align-items:center;gap:.4em;font-family:var(--display);font-weight:500;font-size:clamp(1.75rem,3.4vw,3.25rem);line-height:1}
+.toc .t .ico{width:.95em;height:.95em}
+.toc .d{grid-column:7/10;font-size:.9375rem;line-height:1.6}
+.toc .p{grid-column:10/12;text-align:right;font-size:.875rem;line-height:1.5}
+.toc .p .label{display:block}
+.toc .go{grid-column:12/13;justify-self:end;font-family:var(--display);font-size:1.5rem;opacity:0;transition:opacity .15s}
+.toc a:hover,.toc a:focus-visible{background:var(--surface)}
+.toc a:hover .ico,.toc a:focus-visible .ico{filter:none}
+.toc a:hover .go,.toc a:focus-visible .go{opacity:1}
+
+/* ===== Work ===== */
+/* 12 列 = 左レール 3 列 + 余白 1 列 + 本文 8 列 */
+.work{position:relative;view-timeline:--work;border-top:1px solid var(--rule);padding-bottom:clamp(64px,10vw,136px);scroll-margin-top:45px}
+.work .bar{grid-column:1/13;display:flex;justify-content:space-between;align-items:center;gap:16px;border-bottom:1px dashed var(--hair)}
+.work .bar a{text-decoration:none;display:inline-flex;align-items:center;min-height:44px}
+.work .bar a:hover{text-decoration:underline;text-underline-offset:4px}
+/* 左レール：番号・アイコン・データ。スクロール中も作品の識別子として残る */
+.rail{grid-column:1/4;align-self:start;position:sticky;top:77px;margin-top:40px;border-right:1px solid var(--rule)}
+/* 番号は罫線で切る。罫線＝レールと本文の境目 */
+/* 右（罫線側）だけを切る。上下左はぼかしがはみ出しても切らない */
+.cut{clip-path:inset(-64px 0 -64px -64px);view-timeline:--num}
+.cut .no{display:block;white-space:nowrap;font-family:var(--display);font-weight:800;font-size:clamp(160px,23vw,300px);line-height:.74;letter-spacing:-.04em;color:var(--ink);text-align:right;margin-right:-.24em}
+.rail .of{font-size:.8125rem;color:var(--ink-2);margin-top:16px}
+.rail > :not(.cut){margin-right:24px}
+.rail .app{display:block;width:min(100%,144px);aspect-ratio:1;margin-top:32px;border-radius:22.5%;filter:grayscale(1);transition:filter .2s}
+.rail:hover .app{filter:none}
+.spec{margin-top:32px;font-size:.875rem}
+.spec dl{display:grid;grid-template-columns:4.5em 1fr;border-top:1px solid var(--rule)}
+.spec dt,.spec dd{border-bottom:1px dashed var(--hair);padding:8px 0}
+.spec dt{color:var(--ink-2)}
+.spec a{text-underline-offset:3px;display:inline-block;padding-block:4px}
+/* 本文：8 列のサブグリッド */
+.main{grid-column:5/13;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));column-gap:var(--col-gap);margin-top:40px}
+.ttl{grid-column:1/9}
+.work h2{font-family:var(--display);font-weight:500;font-size:clamp(48px,7.5vw,128px);line-height:.9;letter-spacing:-.02em}
+.work .sub{font-size:clamp(1.0625rem,1.5vw,1.25rem);margin-top:24px;max-width:36em}
+.work .origin{font-size:.875rem;color:var(--ink-2);margin-top:8px}
+.body{grid-column:1/5;margin-top:48px}
+.feat{grid-column:5/9;margin-top:48px}
+.body h3,.feat h3{font-size:1.0625rem;font-weight:700;margin-bottom:8px}
+.body p{margin-bottom:24px}
+.feat li{border-top:1px dashed var(--hair);padding:8px 0;font-size:.9375rem;line-height:1.6}
+.feat li b{font-weight:500;display:block}
+.feat li span{color:var(--ink-2);font-size:.875rem}
+/* 図版：本文と同じ 8 列に揃える。縦長は 2 列ずつ同じ大きさで 1 行に並べる */
+.plates{position:relative;view-timeline:--plates;grid-column:1/9;margin-top:64px;padding-top:16px;border-top:1px solid var(--rule);display:grid;grid-template-columns:repeat(8,minmax(0,1fr));column-gap:var(--col-gap);row-gap:32px;align-items:start}
+.plates figure{min-width:0;grid-column:span 2}
+.plates figcaption{font-size:.8125rem;line-height:1.6;margin-top:8px;display:grid;grid-template-columns:2.2em 1fr}
+.plates .wide{grid-column:span 4}
+.plates .full{grid-column:1/9}
+.plates .tbl{grid-column:span 6;align-self:end}
+
+/* ===== Photo band：作品の境目に入れる写真の帯（装飾）。画面幅いっぱい、上下は罫線で切る ===== */
+.band{position:relative;height:clamp(40px,5vw,72px);border-top:1px solid var(--rule);overflow:clip}
+/* 画像は帯の 5 倍の高さ。静止時は中央を見せる */
+.band img{position:absolute;left:0;top:0;width:100%;height:500%;object-fit:cover;transform:translateY(-40%);filter:grayscale(1) contrast(1.08)}
+@media (prefers-color-scheme: dark){.band img{filter:grayscale(1) contrast(1.08) brightness(.8)}}
+/* わずかなパララックス：帯が画面を通過する間に、画像を帯の高さ 4 倍ぶん動かす。対応ブラウザのみ、動きを減らす設定では止める */
+@keyframes band-drift{from{transform:translateY(0)}to{transform:translateY(-80%)}}
+@supports (animation-timeline: view()){
+  @media (prefers-reduced-motion: no-preference){
+    .band img{animation:band-drift linear both;animation-timeline:view()}
+  }
+}
+
+/* ===== Scroll-linked motion =====
+   動きはすべて既存の構造（切られた文字・罫線・写真の帯）から起こす。
+   スクロールに連動するだけで、勝手に動き続けるものは作らない。動きを減らす設定では最終状態で止める。 */
+@keyframes num-in{from{-webkit-mask-position:0% 0;mask-position:0% 0}to{-webkit-mask-position:100% 0;mask-position:100% 0}}
+@keyframes title-sink{from{transform:none}to{transform:translateY(58%)}}
+@keyframes rule-draw{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@supports (animation-timeline: view()){
+  @media (prefers-reduced-motion: no-preference){
+    /* 番号を 2 層で現す。切り口（レールの縦線）の側から左へワイプし、
+       境目の帯にだけ大きくぼかした層を重ねる。境目が通り過ぎた所はシャープな数字が残る */
+    /* 目次の番号：選択すると切り口から現れ直す（0.6 秒） */
+    html.js .toc .no > b{--m:linear-gradient(to right,transparent 0 54%,#000 57% 100%);-webkit-mask-image:var(--m);mask-image:var(--m);-webkit-mask-size:300% 100%;mask-size:300% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:100% 0;mask-position:100% 0}
+    html.js .toc a:hover .no > b,html.js .toc a:focus-visible .no > b{animation:toc-in .6s cubic-bezier(.25,.6,.2,1) both}
+    @keyframes toc-in{from{-webkit-mask-position:0% 0;mask-position:0% 0}to{-webkit-mask-position:100% 0;mask-position:100% 0}}
+    html.js .cut .no{position:relative;--m:linear-gradient(to right,transparent 0 54%,#000 57% 100%);-webkit-mask-image:var(--m);mask-image:var(--m);-webkit-mask-size:300% 100%;mask-size:300% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:0% 0;mask-position:0% 0;transition:-webkit-mask-position 1.8s cubic-bezier(.25,.6,.2,1),mask-position 1.8s cubic-bezier(.25,.6,.2,1)}
+    /* ぼかした層は番号の外（.cut の疑似要素）に置く。番号のマスクの内側に置くと、にじみが番号の箱で切れる */
+    .cut{position:relative}
+    /* 時間で再生する：番号が画面に入るたびに 1.8 秒かけて現れる（スクロール量に連動させると、移動してきた時点で完了していて気づかない） */
+    html.js .cut.in .no,html.js .cut.in::before{-webkit-mask-position:100% 0;mask-position:100% 0}
+    html.js .cut::before{content:attr(data-n);position:absolute;top:-40px;bottom:-40px;left:-40px;right:calc(-.24em - 40px);padding:40px;font-family:var(--display);font-weight:800;font-size:clamp(160px,23vw,300px);line-height:.74;letter-spacing:-.04em;text-align:right;white-space:nowrap;color:var(--ink);filter:blur(18px);--b:linear-gradient(to right,transparent 0 40%,#000 49% 56%,transparent 66% 100%);-webkit-mask-image:var(--b);mask-image:var(--b);-webkit-mask-size:300% 100%;mask-size:300% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:0% 0;mask-position:0% 0;transition:-webkit-mask-position 1.8s cubic-bezier(.25,.6,.2,1),mask-position 1.8s cubic-bezier(.25,.6,.2,1)}
+    /* 「Portfolio」がスクロールにつれて年表の罫線の下へ沈む */
+    .cover h1 span{animation:title-sink linear both;animation-timeline:scroll(root);animation-range:0 70vh}
+    /* 図版の上の罫線が左から右へ引かれる */
+    .plates{border-top-color:transparent}
+    .plates::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--rule);transform-origin:left;animation:rule-draw linear both;animation-range:cover 0% cover 12%}
+    .plates::before{animation-timeline:--plates;animation-range:cover 0% cover 25%}
+  }
+}
+/* 網点の帯（JS が有効なときだけ canvas に置き換える） */
+.band canvas{position:absolute;left:0;width:100%;pointer-events:none}
+.band.ht{overflow:visible}
+.band.ht img{visibility:hidden}
+.band.ht .ht-dots{top:0;height:100%}
+.band.ht .ht-sand{top:-120px;height:calc(100% + 240px);z-index:2}
+
+/* 扉の「Portfolio」の砂：罫線をくぐった部分が砂粒になってこぼれる（canvas は見た目だけ） */
+.sift{position:absolute;left:0;width:100%;pointer-events:none;z-index:1}
+
+/* ===== Contact ===== */
+.contact{position:relative;border-top:1px solid var(--rule);padding-block:32px 48px;font-size:.9375rem}
+/* 署名の「龍」：自筆の書。ページで一点だけ置く。色は文字色に合わせる（SVG はマスクとして使う） */
+.sign{width:82px;height:98px;margin:0 0 16px auto;background:var(--ink);-webkit-mask:url(./images/ryu.svg) center/contain no-repeat;mask:url(./images/ryu.svg) center/contain no-repeat}
+.gather{position:absolute;left:0;width:100%;pointer-events:none;z-index:1}
+.contact .a{grid-column:1/9}.contact .c{grid-column:9/13;text-align:right}
+.contact h2{font-size:1rem;font-weight:700;margin-bottom:8px}
+
+/* ===== Responsive ===== */
+@media (max-width:860px){
+  .cover .intro,.cover .career{grid-column:1/13}
+  .cover .career{margin-top:40px}
+  .timeline ol{grid-template-columns:1fr 1fr;row-gap:16px}
+  .timeline li:nth-child(odd){border-left:0;padding-left:0}
+  .toc a{grid-template-columns:2.5em 1fr auto;row-gap:8px}
+  .toc .no{grid-column:1;grid-row:1/3;font-size:1.75rem}.toc .t{grid-column:2/4}
+  .toc .d{grid-column:2/3}.toc .p{grid-column:3;grid-row:2}
+  .toc .go{display:none}
+  .rail{grid-column:1/13;position:static;display:grid;grid-template-columns:1fr auto;column-gap:16px;align-items:end;margin-top:40px;border-right:0}
+  .cut{grid-column:1;grid-row:1;width:58%;border-right:1px solid var(--rule)}.cut .no,.cut::before{font-size:160px}
+  .rail .of{grid-column:1;grid-row:2}.rail > :not(.cut){margin-right:0}
+  .rail .app{width:72px;margin-top:0;grid-row:1/3;grid-column:2;justify-self:end;align-self:end}
+  .spec{grid-column:1/3}
+  .main{display:contents}
+  .ttl{order:1;margin-top:32px}.rail{order:2}.body{order:3}.feat{order:4}.plates{order:5}
+  .ttl,.body,.feat,.plates{grid-column:1/13}
+  .plates{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .plates figure,.plates .wide{grid-column:span 1}
+  .plates .full,.plates .tbl{grid-column:1/3}
+    .contact .a,.contact .c{grid-column:1/13;text-align:left;margin-bottom:16px}
+  .sign{margin-left:0}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{transition:none !important}
+}
+</style>
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body>
+<a class="skip" href="#contents">実績一覧へ移動</a>
+
+<header class="head">
+  <div class="grid">
+    <a class="home" href="#top"><span>Portfolio</span></a>
+    <nav class="label" aria-label="ページ内">
+      <a href="#contents">Contents</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<!-- ===== Cover ===== -->
+<section class="cover" id="top" aria-labelledby="title">
+  <div class="grid">
+    <div class="intro">
+      <p class="role">Visual / UI / Service Designer</p>
+      <p class="name">Ryu Kaneko</p>
+    </div>
+    <div class="career">
+    <ol class="roles" aria-label="経歴の概要">
+      <li><span class="num">1997</span><b>Visual Design</b><span class="label">大阪芸術大学 ビジュアルデザイン学科</span></li>
+      <li><span class="num">2001</span><b>UI / Graphic Design</b><span class="label">Freelance</span></li>
+      <li><span class="num">2014</span><b>UX / UI · Service Design</b><span class="label">In-house</span></li>
+    </ol>
+      <p class="summary">ビジュアルデザインを学び、フリーランスの UI デザイナー、事業会社でインハウスのデザイナーとして働いてきました。</p>
+    </div>
+    <h1 id="title"><span>Portfolio</span></h1>
+  </div>
+  <div class="timeline">
+    <div class="grid">
+      <ol aria-label="職歴">
+        <li><span class="num">2001</span><span>フリーランス</span></li>
+        <li><span class="num">2014</span><span>Yahoo! JAPAN</span></li>
+        <li><span class="num">2019</span><span>コンパス</span></li>
+        <li><span class="num">2020</span><span>NAIN</span></li>
+        <li><span class="num">2021</span><span>Qrio</span></li>
+        <li><span class="num">2022</span><span>トヨタファイナンス</span></li>
+        <li><span class="num">2024</span><span>F&amp;M net（現職）</span></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Contents ===== -->
+<section id="contents" class="contents" aria-labelledby="contents-h">
+  <div class="grid">
+    <div class="sec-title"><h2 id="contents-h">Contents</h2><span class="ja">実績一覧</span></div>
+    <p class="purpose">AI を理解するために個人開発した、iOS / macOS アプリと Figma プラグイン。</p>
+    <div class="filters" role="group" aria-label="分類で絞り込み">
+      <button type="button" data-f="all" aria-pressed="true">すべて</button>
+      <button type="button" data-f="app" aria-pressed="false">iOS / macOS アプリ</button>
+      <button type="button" data-f="figma" aria-pressed="false">Figma プラグイン</button>
+      <span class="count label" aria-live="polite"><span id="count">8</span> 件</span>
+    </div>
+    <ol class="toc">
+      <li data-k="app"><a href="#marga"><span class="no num"><b>01</b></span><span class="t"><img class="ico" src="./marga/images/icon.png" width="512" height="512" alt="">Marga</span><span class="d">バイクツーリングの記録と管理</span><span class="p"><span class="label">iOS · watchOS</span>App Store</span><span class="go" aria-hidden="true">→</span></a></li>
+      <li data-k="app"><a href="#suchi"><span class="no num"><b>02</b></span><span class="t"><img class="ico" src="./suchi/images/icon.png" width="512" height="512" alt="">Suchi</span><span class="d">バイク・自転車向けのコンパス型ナビ</span><span class="p"><span class="label">iOS</span>App Store</span><span class="go" aria-hidden="true">→</span></a></li>
+      <li data-k="app"><a href="#record-recorder"><span class="no num"><b>03</b></span><span class="t"><img class="ico" src="./record-recorder/images/icon.png" width="512" height="512" alt="">Record Recorder</span><span class="d">レコードコレクションの管理</span><span class="p"><span class="label">iOS</span>App Store</span><span class="go" aria-hidden="true">→</span></a></li>
+      <li data-k="app"><a href="#tattva"><span class="no num"><b>04</b></span><span class="t"><img class="ico" src="./tattva/images/icon.png" width="512" height="512" alt="">Tattva</span><span class="d">画像とテキストから AI で設計書を生成</span><span class="p"><span class="label">macOS</span>Mac App Store</span><span class="go" aria-hidden="true">→</span></a></li>
+      <li data-k="figma"><a href="#sutra"><span class="no num"><b>05</b></span><span class="t">Sutra</span><span class="d">トークンと連動するコンポーネント生成</span><span class="p"><span class="label">Figma</span>Community</span><span class="go" aria-hidden="true">→</span></a></li>
+      <li data-k="figma"><a href="#satori"><span class="no num"><b>06</b></span><span class="t">Satori</span><span class="d">フレームの構造を AI で解析して修正</span><span class="p"><span class="label">Figma</span>組織内リリース</span><span class="go" aria-hidden="true">→</span></a></li>
+      <li data-k="figma"><a href="#sakshi"><span class="no num"><b>07</b></span><span class="t">Sakshi</span><span class="d">デザインシステムへの準拠を監査</span><span class="p"><span class="label">Figma</span>組織内リリース</span><span class="go" aria-hidden="true">→</span></a></li>
+      <li data-k="figma"><a href="#ooui"><span class="no num"><b>08</b></span><span class="t">OOUI Suite</span><span class="d">OOUI のモデリングからワイヤーフレームまで</span><span class="p"><span class="label">Figma · FigJam</span>組織内リリース</span><span class="go" aria-hidden="true">→</span></a></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ===== 01 Marga ===== -->
+<article id="marga" class="work" aria-labelledby="marga-h">
+  <div class="grid">
+    <nav class="bar label" aria-label="実績間の移動"><a href="#contents">↑ Contents</a><a href="#suchi">Next: Suchi →</a></nav>
+    <aside class="rail" aria-label="実績の情報">
+      <div class="cut" aria-hidden="true" data-n="01"><span class="no num">01</span></div><p class="of label"><span class="num">01</span> / 08</p>
+      <img class="app" src="./marga/images/icon.png" width="512" height="512" alt="">
+      <div class="spec"><dl>
+      <dt>分類</dt><dd>iOS / watchOS アプリ</dd>
+      <dt>期間</dt><dd>2026 —</dd>
+      <dt>役割</dt><dd>企画・設計・UI・開発（AI を活用）</dd>
+      <dt>技術</dt><dd>SwiftUI, SwiftData, CloudKit, MapKit, Vision, Swift Charts, WatchConnectivity</dd>
+      <dt>依存</dt><dd>外部ライブラリなし</dd>
+      <dt>公開</dt><dd><a href="https://apps.apple.com/us/app/marga/id6763526779">App Store</a></dd>
+      <dt>資料</dt><dd><a href="./marga/process.md">開発プロセス</a>、<a href="./marga/technical.md">技術</a></dd>
+    </dl></div>
+    </aside>
+    <div class="main">
+    <header class="ttl">
+      <h2 id="marga-h">Marga</h2>
+      <p class="sub">バイクツーリングの走行ルート・給油・行きたい場所を記録する iOS アプリ。</p>
+    </header>
+    <div class="body">
+      <h3>概要</h3>
+      <p>走行ルート、給油の記録、行きたい場所のメモを 1 つのアプリにまとめた。地図・記録・給油・ウィッシュリストを行き来できる。</p>
+      <h3>設計意図</h3>
+      <p>走行中は iPhone を操作できないため、記録の開始と停止を Apple Watch から行えるようにした。iPhone と Watch のどちらから操作しても同じ処理を通る構成にし、記録が食い違わないようにした。</p>
+      <p>給油はレシートを撮影すると OCR で入力される。手入力の手間を減らし、記録を続けやすくするため。</p>
+      <p>地図上のルートは、記録中・過去・強調で色を分けた。過去のルートは不透明度を下げ、記録中のルートが埋もれないようにした。</p>
+    </div>
+    <div class="feat"><h3>主な機能</h3><ul>
+      <li><b>ルート記録</b><span>GPS で走行軌跡を記録し、エリア名を自動で付ける</span></li>
+      <li><b>給油管理</b><span>給油量・単価・燃費を計算。レシートの OCR 入力</span></li>
+      <li><b>ウィッシュリスト</b><span>行きたい場所を地図で管理</span></li>
+      <li><b>統計</b><span>月別の走行距離・燃費の推移</span></li>
+      <li><b>同期とバックアップ</b><span>iCloud 同期、JSON の書き出しと読み込み</span></li>
+    </ul></div>
+    <div class="plates">
+      <figure><img src="./marga/images/01_map.jpg" width="600" height="1298" alt="MAP 画面。走行ルートを地図上に記録している" loading="lazy"><figcaption><span class="num">01</span>MAP：走行ルートを記録し、過去のルートを重ねて表示</figcaption></figure>
+      <figure><img src="./marga/images/02_rides.jpg" width="600" height="1298" alt="RIDES 画面。ルート・距離・時間の一覧" loading="lazy"><figcaption><span class="num">02</span>RIDES：距離・時間・エリア名の一覧</figcaption></figure>
+      <figure><img src="./marga/images/03_wishlist.jpg" width="600" height="1298" alt="WISHLIST 画面。行きたい場所を地図で管理" loading="lazy"><figcaption><span class="num">03</span>WISHLIST：行きたい場所の管理</figcaption></figure>
+      <figure><img src="./marga/images/04_fuel.jpg" width="600" height="1298" alt="FUEL 画面。レシート撮影による給油記録" loading="lazy"><figcaption><span class="num">04</span>FUEL：レシートの OCR 入力</figcaption></figure>
+    </div>
+    </div>
+  </div>
+</article>
+
+<!-- ===== 02 Suchi ===== -->
+<div class="band" aria-hidden="true"><img src="./images/photos/band-02.jpg" width="2400" height="800" alt="" loading="lazy"></div>
+<article id="suchi" class="work" aria-labelledby="suchi-h">
+  <div class="grid">
+    <nav class="bar label" aria-label="実績間の移動"><a href="#contents">↑ Contents</a><a href="#record-recorder">Next: Record Recorder →</a></nav>
+    <aside class="rail" aria-label="実績の情報">
+      <div class="cut" aria-hidden="true" data-n="02"><span class="no num">02</span></div><p class="of label"><span class="num">02</span> / 08</p>
+      <img class="app" src="./suchi/images/icon.png" width="512" height="512" alt="">
+      <div class="spec"><dl>
+      <dt>分類</dt><dd>iOS アプリ</dd>
+      <dt>期間</dt><dd>2026.07 —</dd>
+      <dt>役割</dt><dd>企画・設計・UI・開発（AI を活用）</dd>
+      <dt>技術</dt><dd>SwiftUI, MapKit, CoreLocation, SwiftData, 方位・天体計算（自作）</dd>
+      <dt>依存</dt><dd>外部ライブラリなし</dd>
+      <dt>公開</dt><dd><a href="https://apps.apple.com/us/app/suchi-compass-beeline-nav/id6792340914">App Store</a></dd>
+      <dt>資料</dt><dd><a href="./suchi/process.md">開発プロセス</a>、<a href="./suchi/technical.md">技術</a></dd>
+    </dl></div>
+    </aside>
+    <div class="main">
+    <header class="ttl">
+      <h2 id="suchi-h">Suchi</h2>
+      <p class="sub">目的地への方角と直線距離だけを表示する、バイク・自転車向けの iOS アプリ。</p>
+    </header>
+    <div class="body">
+      <h3>概要</h3>
+      <p>経路案内はしない。目的地への方角と直線距離を、画面いっぱいの矢印と数字で表示する。どの道を走るかは利用者が決める。</p>
+      <h3>設計意図</h3>
+      <p>車体の金属で方位センサーがずれることがあるため、コンパスリングに太陽と月の方位を重ねて表示し、その場でずれを確認できるようにした。</p>
+      <p>距離の単位は端末の地域設定に合わせて m / km と ft / mi を切り替える。日本語と英語に対応。</p>
+    </div>
+    <div class="feat"><h3>主な機能</h3><ul>
+      <li><b>コンパスナビ</b><span>方角と直線距離を全画面で表示</span></li>
+      <li><b>目的地の設定</b><span>地図の長押し、またはキーワード検索</span></li>
+      <li><b>方位リングと天体</b><span>太陽・月の方位で磁気のずれを確認</span></li>
+      <li><b>近くで見つける</b><span>給油・コンビニ・トイレを距離と方角つきで一覧</span></li>
+      <li><b>走行記録</b><span>軌跡・距離・時間・平均速度。履歴から再ナビ</span></li>
+    </ul></div>
+    <div class="plates">
+      <figure><img src="./suchi/images/01_navi.jpg" width="600" height="1298" alt="NAVI 画面。目的地への方向を示す大きな矢印と距離" loading="lazy"><figcaption><span class="num">01</span>NAVI：目的地への方角と距離</figcaption></figure>
+      <figure><img src="./suchi/images/02_compass_ring.jpg" width="600" height="1298" alt="方位リングに太陽と月の方位を重ねた画面" loading="lazy"><figcaption><span class="num">02</span>方位リングと太陽・月</figcaption></figure>
+      <figure><img src="./suchi/images/03_map.jpg" width="600" height="1298" alt="MAP 画面。地図をタップして目的地を設定" loading="lazy"><figcaption><span class="num">03</span>MAP：目的地の設定</figcaption></figure>
+      <figure><img src="./suchi/images/05_nearby.jpg" width="600" height="1298" alt="NEARBY 画面。近くの施設を表示" loading="lazy"><figcaption><span class="num">04</span>NEARBY：近くの施設</figcaption></figure>
+    </div>
+    </div>
+  </div>
+</article>
+
+<!-- ===== 03 Record Recorder ===== -->
+<div class="band" aria-hidden="true"><img src="./images/photos/band-03.jpg" width="2400" height="800" alt="" loading="lazy"></div>
+<article id="record-recorder" class="work" aria-labelledby="rr-h">
+  <div class="grid">
+    <nav class="bar label" aria-label="実績間の移動"><a href="#contents">↑ Contents</a><a href="#tattva">Next: Tattva →</a></nav>
+    <aside class="rail" aria-label="実績の情報">
+      <div class="cut" aria-hidden="true" data-n="03"><span class="no num">03</span></div><p class="of label"><span class="num">03</span> / 08</p>
+      <img class="app" src="./record-recorder/images/icon.png" width="512" height="512" alt="">
+      <div class="spec"><dl>
+      <dt>分類</dt><dd>iOS アプリ</dd>
+      <dt>期間</dt><dd>2026.05 —</dd>
+      <dt>役割</dt><dd>企画・設計・UI・開発（AI を活用）</dd>
+      <dt>技術</dt><dd>SwiftUI, SwiftData, CloudKit, Vision, Swift Charts, Discogs API</dd>
+      <dt>依存</dt><dd>外部ライブラリなし</dd>
+      <dt>公開</dt><dd><a href="https://apps.apple.com/us/app/record-recorder/id6766056660">App Store</a></dd>
+      <dt>資料</dt><dd><a href="./record-recorder/process.md">開発プロセス</a>、<a href="./record-recorder/technical.md">技術</a></dd>
+    </dl></div>
+    </aside>
+    <div class="main">
+    <header class="ttl">
+      <h2 id="rr-h">Record Recorder</h2>
+      <p class="sub">ジャケットを撮影してレコードのコレクションを管理する iOS アプリ。</p>
+    </header>
+    <div class="body">
+      <h3>概要</h3>
+      <p>ジャケットを撮影するか、バーコードを読み取ると、Discogs API からアルバムの情報を取得して入力する。</p>
+      <h3>設計意図</h3>
+      <p>文字認識とバーコード認識は Apple の Vision、保存と同期は SwiftData と CloudKit で行い、外部ライブラリを使わずに構成した。</p>
+      <p>詳細画面から Apple Music で同じ作品を検索できるようにし、棚のレコードから音源にすぐ移れるようにした。</p>
+    </div>
+    <div class="feat"><h3>主な機能</h3><ul>
+      <li><b>自動入力</b><span>撮影またはバーコードから作品情報を取得</span></li>
+      <li><b>コレクション管理</b><span>ジャンル・年代・お気に入りで検索と絞り込み</span></li>
+      <li><b>統計</b><span>ジャンルと年代の分布をグラフで表示</span></li>
+      <li><b>同期と入出力</b><span>iCloud 同期、CSV の書き出しと読み込み</span></li>
+      <li><b>Apple Music 連携</b><span>同じ作品を Apple Music で検索</span></li>
+    </ul></div>
+    <div class="plates">
+      <figure><img src="./record-recorder/images/01_collection.jpg" width="600" height="1298" alt="コレクション一覧の画面" loading="lazy"><figcaption><span class="num">01</span>コレクション一覧</figcaption></figure>
+      <figure><img src="./record-recorder/images/02_auto_input.jpg" width="600" height="1298" alt="撮影から作品情報を自動入力する画面" loading="lazy"><figcaption><span class="num">02</span>撮影による自動入力</figcaption></figure>
+      <figure><img src="./record-recorder/images/04_filter.jpg" width="600" height="1298" alt="年代やジャンルで絞り込む画面" loading="lazy"><figcaption><span class="num">03</span>絞り込み</figcaption></figure>
+      <figure><img src="./record-recorder/images/05_apple_music.jpg" width="600" height="1298" alt="Apple Music で作品を検索する画面" loading="lazy"><figcaption><span class="num">04</span>Apple Music 連携</figcaption></figure>
+    </div>
+    </div>
+  </div>
+</article>
+
+<!-- ===== 04 Tattva ===== -->
+<div class="band" aria-hidden="true"><img src="./images/photos/band-04.jpg" width="2400" height="800" alt="" loading="lazy"></div>
+<article id="tattva" class="work" aria-labelledby="tattva-h">
+  <div class="grid">
+    <nav class="bar label" aria-label="実績間の移動"><a href="#contents">↑ Contents</a><a href="#sutra">Next: Sutra →</a></nav>
+    <aside class="rail" aria-label="実績の情報">
+      <div class="cut" aria-hidden="true" data-n="04"><span class="no num">04</span></div><p class="of label"><span class="num">04</span> / 08</p>
+      <img class="app" src="./tattva/images/icon.png" width="512" height="512" alt="">
+      <div class="spec"><dl>
+      <dt>分類</dt><dd>macOS アプリ</dd>
+      <dt>期間</dt><dd>2026.05 — 2026.06</dd>
+      <dt>役割</dt><dd>企画・設計・UI・開発（AI を活用）</dd>
+      <dt>技術</dt><dd>SwiftUI, Gemini API, mermaid.js, WKWebView, Keychain</dd>
+      <dt>公開</dt><dd><a href="https://apps.apple.com/us/app/tattva/id6766077074?mt=12">Mac App Store</a></dd>
+      <dt>資料</dt><dd><a href="./tattva/process.md">開発プロセス</a>、<a href="./tattva/technical.md">技術</a></dd>
+    </dl></div>
+    </aside>
+    <div class="main">
+    <header class="ttl">
+      <h2 id="tattva-h">Tattva</h2>
+      <p class="sub">画像とテキストから、AI でデザイン仕様書と UX 設計書を生成する macOS アプリ。</p>
+      <p class="origin">名前はサンスクリット語の <span lang="sa">तत्त्व</span>（本質）から。</p>
+    </header>
+    <div class="body">
+      <h3>概要</h3>
+      <p>Mood 画像・Structure 画像と、Context / Intent のテキストを入力すると、Gemini API で 2 つの文書を生成する。DESIGN.md は Google Stitch 向けの機械可読なデザイン仕様、BLUEPRINT.md は人が読むための UX 設計書。</p>
+      <h3>設計意図</h3>
+      <p>DESIGN.md を先に生成し、その数値を BLUEPRINT.md に引き継ぐ 2 段階にした。2 つの文書でカラーコードやフォントサイズがそろう。</p>
+      <p>API キーは利用者のものを macOS の Keychain に保存し、サーバーを持たない構成にした。</p>
+    </div>
+    <div class="feat"><h3>主な機能</h3><ul>
+      <li><b>3 パターン生成</b><span>Precision / Organic / Expressive の 3 方向</span></li>
+      <li><b>適合度チェック</b><span>DESIGN.md が Google Stitch の形式を満たすかを確認</span></li>
+      <li><b>ダイアグラム表示</b><span>mermaid 図の描画、ズーム、PNG 書き出し</span></li>
+      <li><b>自動リトライ</b><span>一時的な API エラーを最大 3 回再試行</span></li>
+      <li><b>マルチウィンドウ</b><span>複数の案を並行して生成</span></li>
+    </ul></div>
+    <div class="plates">
+      <figure class="full"><img src="./tattva/images/01_overview.jpg" width="1200" height="750" alt="TATTVA の全体画面" loading="lazy"><figcaption><span class="num">01</span>全体</figcaption></figure>
+      <figure class="wide"><img src="./tattva/images/02_input.jpg" width="1200" height="750" alt="Mood と Structure の画像を入力する画面" loading="lazy"><figcaption><span class="num">02</span>入力</figcaption></figure>
+      <figure class="wide"><img src="./tattva/images/03_diagram.jpg" width="1200" height="750" alt="生成したダイアグラムを表示する画面" loading="lazy"><figcaption><span class="num">03</span>ダイアグラム</figcaption></figure>
+      <figure class="wide"><img src="./tattva/images/04_design_md.jpg" width="1200" height="750" alt="生成した DESIGN.md を表示する画面" loading="lazy"><figcaption><span class="num">04</span>DESIGN.md</figcaption></figure>
+      <figure class="wide"><img src="./tattva/images/05_interface.jpg" width="1200" height="750" alt="macOS の操作画面" loading="lazy"><figcaption><span class="num">05</span>操作画面</figcaption></figure>
+    </div>
+    </div>
+  </div>
+</article>
+
+<!-- ===== 05 Sutra ===== -->
+<div class="band" aria-hidden="true"><img src="./images/photos/band-05.jpg" width="2400" height="800" alt="" loading="lazy"></div>
+<article id="sutra" class="work" aria-labelledby="sutra-h">
+  <div class="grid">
+    <nav class="bar label" aria-label="実績間の移動"><a href="#contents">↑ Contents</a><a href="#satori">Next: Satori →</a></nav>
+    <aside class="rail" aria-label="実績の情報">
+      <div class="cut" aria-hidden="true" data-n="05"><span class="no num">05</span></div><p class="of label"><span class="num">05</span> / 08</p>
+      <div class="spec"><dl>
+      <dt>分類</dt><dd>Figma プラグイン</dd>
+      <dt>期間</dt><dd>2026.06 —</dd>
+      <dt>役割</dt><dd>企画・設計・UI・開発（AI を活用）</dd>
+      <dt>技術</dt><dd>TypeScript, Figma Plugin API, Variables, esbuild, Vitest</dd>
+      <dt>規模</dt><dd>TypeScript 約 15,000 行（公開版）</dd>
+      <dt>公開</dt><dd><a href="https://www.figma.com/community/plugin/1652926105517784439/sutra">Figma Community</a></dd>
+      <dt>資料</dt><dd><a href="./sutra/process.md">開発プロセス</a>、<a href="./sutra/technical.md">技術</a></dd>
+    </dl></div>
+    </aside>
+    <div class="main">
+    <header class="ttl">
+      <h2 id="sutra-h">Sutra</h2>
+      <p class="sub">デザイントークンと連動する、UI コンポーネントとワイヤーフレームの生成プラグイン。</p>
+    </header>
+    <div class="body">
+      <h3>概要</h3>
+      <p>ボタンや入力欄からページ全体のレイアウトまで、UI コンポーネントを Figma のキャンバスに生成する。白黒のワイヤーフレームとして使い始め、色や間隔のトークンを決めると、Figma Variables と連動したデザインシステムに移れる。</p>
+      <h3>設計意図</h3>
+      <p>1 色のアンカー色から 10〜23 段階の色を計算し、文字と背景のコントラスト比が WCAG AA を下回る組み合わせを警告する。</p>
+      <p>外部と通信しない設定（networkAccess: none）にし、データを外に送らない。</p>
+      <h3>開発中</h3>
+      <p>Figma のコンポーネントを React と Tailwind のコードとして書き出す機能。2026 年 10 月時点で 55 件を出力できる。</p>
+    </div>
+    <div class="feat"><h3>主な機能</h3><ul>
+      <li><b>コンポーネント生成</b><span>Atomic Design の階層で 90 種以上</span></li>
+      <li><b>Token Store</b><span>色・間隔・角丸・フォントを一括で切り替え</span></li>
+      <li><b>Variables 同期</b><span>Primitive / Semantic の 2 層、Light / Dark</span></li>
+      <li><b>手動変更の保護</b><span>上書きするか残すかを項目ごとに選択</span></li>
+      <li><b>書き出し</b><span>Design Tokens の JSON、CSS カスタムプロパティ</span></li>
+    </ul></div>
+    <div class="plates">
+      <figure class="wide"><img src="./sutra/images/components_light.jpg" width="1200" height="675" alt="SUTRA で生成したコンポーネント群（ライトテーマ）" loading="lazy"><figcaption><span class="num">01</span>ライトテーマ</figcaption></figure>
+      <figure class="wide"><img src="./sutra/images/components_dark.jpg" width="1200" height="675" alt="SUTRA で生成したコンポーネント群（ダークテーマ）" loading="lazy"><figcaption><span class="num">02</span>ダークテーマ。Variables の切り替えで配置済みのコンポーネントも追従する</figcaption></figure>
+    </div>
+    </div>
+  </div>
+</article>
+
+<!-- ===== 06 Satori ===== -->
+<div class="band" aria-hidden="true"><img src="./images/photos/band-06.jpg" width="2400" height="800" alt="" loading="lazy"></div>
+<article id="satori" class="work" aria-labelledby="satori-h">
+  <div class="grid">
+    <nav class="bar label" aria-label="実績間の移動"><a href="#contents">↑ Contents</a><a href="#sakshi">Next: Sakshi →</a></nav>
+    <aside class="rail" aria-label="実績の情報">
+      <div class="cut" aria-hidden="true" data-n="06"><span class="no num">06</span></div><p class="of label"><span class="num">06</span> / 08</p>
+      <div class="spec"><dl>
+      <dt>分類</dt><dd>Figma プラグイン</dd>
+      <dt>期間</dt><dd>2026.06</dd>
+      <dt>役割</dt><dd>企画・設計・UI・開発（AI を活用）</dd>
+      <dt>技術</dt><dd>TypeScript, Figma Plugin API, Gemini API</dd>
+      <dt>公開</dt><dd>組織内リリース</dd>
+      <dt>資料</dt><dd><a href="./satori/process.md">開発プロセス</a>、<a href="./satori/technical.md">技術</a></dd>
+    </dl></div>
+    </aside>
+    <div class="main">
+    <header class="ttl">
+      <h2 id="satori-h">Satori</h2>
+      <p class="sub">選択したフレームの構造を AI で解析し、その場で直す Figma プラグイン。</p>
+      <p class="origin">名前は仏教の「悟り」（直観的に理解する）から。Sakshi と対になる。</p>
+    </header>
+    <div class="body">
+      <h3>概要</h3>
+      <p>エンジニアに渡す前のデザインデータには、名前のないレイヤー、Auto Layout を使っていない配置、不要なグループなどが残りやすい。選んだフレームの画像とレイヤー構造を Gemini に渡して解析し、問題を見つけて修正する。</p>
+      <h3>設計意図</h3>
+      <p>まとめて修正する前に、Figma のバージョン履歴を自動で保存する。AI の判断の信頼度を表示し、低いときは注意を出す。</p>
+    </div>
+    <div class="feat"><h3>主な機能</h3><ul>
+      <li><b>構造解析</b><span>画像とレイヤー構造を同時に解析</span></li>
+      <li><b>ワンクリック修正</b><span>名前の変更、Auto Layout の適用、グループ解除</span></li>
+      <li><b>一括修正</b><span>直す項目を選んで適用</span></li>
+      <li><b>コンポーネント化の提案</b><span>似た構造の要素をまとめる</span></li>
+      <li><b>書き出し</b><span>解析結果を Markdown で保存</span></li>
+    </ul></div>
+    </div>
+  </div>
+</article>
+
+<!-- ===== 07 Sakshi ===== -->
+<div class="band" aria-hidden="true"><img src="./images/photos/band-07.jpg" width="2400" height="800" alt="" loading="lazy"></div>
+<article id="sakshi" class="work" aria-labelledby="sakshi-h">
+  <div class="grid">
+    <nav class="bar label" aria-label="実績間の移動"><a href="#contents">↑ Contents</a><a href="#ooui">Next: OOUI Suite →</a></nav>
+    <aside class="rail" aria-label="実績の情報">
+      <div class="cut" aria-hidden="true" data-n="07"><span class="no num">07</span></div><p class="of label"><span class="num">07</span> / 08</p>
+      <div class="spec"><dl>
+      <dt>分類</dt><dd>Figma プラグイン</dd>
+      <dt>期間</dt><dd>2026.06</dd>
+      <dt>役割</dt><dd>企画・設計・UI・開発（AI を活用）</dd>
+      <dt>技術</dt><dd>TypeScript, Figma Plugin API, Figma REST API, Gemini API（任意）</dd>
+      <dt>公開</dt><dd>組織内リリース</dd>
+      <dt>資料</dt><dd><a href="./sakshi/process.md">開発プロセス</a>、<a href="./sakshi/technical.md">技術</a></dd>
+    </dl></div>
+    </aside>
+    <div class="main">
+    <header class="ttl">
+      <h2 id="sakshi-h">Sakshi</h2>
+      <p class="sub">デザインがデザインシステムに沿って作られているかを監査する Figma プラグイン。</p>
+      <p class="origin">名前はサンスクリット語の <span lang="sa">साक्षी</span>（目撃者、純粋な観察者）から。Satori と対になる。</p>
+    </header>
+    <div class="body">
+      <h3>概要</h3>
+      <p>選んだフレームの中で、ライブラリのコンポーネント・スタイル・Variables が意図どおりに使われているかを調べて報告する。</p>
+      <h3>設計意図</h3>
+      <p>ルールにもとづくチェックを基本にし、Gemini による解析は必要なときだけ加えられるようにした。判断の基準は利用者が決め、各チェックを有効・無効にできる。</p>
+    </div>
+    <div class="feat"><h3>主な機能</h3><ul>
+      <li><b>壊れたインスタンス</b><span>元のコンポーネントが失われたものを検出</span></li>
+      <li><b>スタイル未適用</b><span>色・文字のスタイル、Variables の未適用を検出</span></li>
+      <li><b>ライブラリ外の部品</b><span>ファイル内のコンポーネントの使用を検出</span></li>
+      <li><b>AI 解析（任意）</b><span>Variant の選び方の一貫性を判断</span></li>
+      <li><b>結果の整理</b><span>ルール別・ノード別の表示、絞り込み、CSV 書き出し</span></li>
+    </ul></div>
+    </div>
+  </div>
+</article>
+
+<!-- ===== 08 OOUI Suite ===== -->
+<div class="band" aria-hidden="true"><img src="./images/photos/band-08.jpg" width="2400" height="800" alt="" loading="lazy"></div>
+<article id="ooui" class="work" aria-labelledby="ooui-h">
+  <div class="grid">
+    <nav class="bar label" aria-label="実績間の移動"><a href="#contents">↑ Contents</a><a href="#contact">Contact →</a></nav>
+    <aside class="rail" aria-label="実績の情報">
+      <div class="cut" aria-hidden="true" data-n="08"><span class="no num">08</span></div><p class="of label"><span class="num">08</span> / 08</p>
+      <div class="spec"><dl>
+      <dt>分類</dt><dd>Figma / FigJam プラグイン（3 本）</dd>
+      <dt>期間</dt><dd>2026.05 — 2026.06</dd>
+      <dt>役割</dt><dd>企画・設計・UI・開発（AI を活用）</dd>
+      <dt>技術</dt><dd>TypeScript, Figma Plugin API, Gemini API, Vite</dd>
+      <dt>公開</dt><dd>組織内リリース</dd>
+      <dt>資料</dt><dd><a href="./ooui/process.md">開発プロセス</a>、<a href="./ooui/technical.md">技術</a></dd>
+    </dl></div>
+    </aside>
+    <div class="main">
+    <header class="ttl">
+      <h2 id="ooui-h">OOUI Suite</h2>
+      <p class="sub">オブジェクト指向 UI の設計を、モデリングからワイヤーフレームまで Figma 上でつなぐ 3 本のプラグイン。</p>
+    </header>
+    <div class="body">
+      <h3>概要</h3>
+      <p>OOUI では、業務の説明からオブジェクトを抜き出し、プロパティ・アクション・関係を整理して、一覧画面と詳細画面を組み立てる。この工程は手作業が多く、設計を変えるたびに図とドキュメントがずれる。3 本のプラグインで、この工程を Figma 上の 1 つの流れにした。</p>
+      <h3>設計意図</h3>
+      <p>3 本は共通の形式のオブジェクトカードでつながる。入口を利用者の習熟度で分け、AI に任せる範囲も変えた。</p>
+    </div>
+    <div class="feat"><h3>3 本の役割</h3><ul>
+      <li><b>Modeler</b><span>業務の説明から AI がオブジェクトモデルを推論して描く（初級〜中級者向け）</span></li>
+      <li><b>Modeler Pro</b><span>自分で作った Mermaid のモデルを読み込んで描く。AI の補完は任意（上級者向け）</span></li>
+      <li><b>View View</b><span>オブジェクトカードから一覧画面・詳細画面・アプリの枠を生成する</span></li>
+    </ul></div>
+    </div>
+  </div>
+</article>
+</main>
+
+<div class="band" aria-hidden="true"><img src="./images/photos/band-01.jpg" width="2400" height="800" alt="" loading="lazy"></div>
+<footer id="contact" class="contact" aria-labelledby="contact-h">
+  <div class="grid">
+    <div class="a"><h2 id="contact-h">Contact</h2><p>rashers.basho_6a [at] icloud.com<br><span class="label">[at] を @ に置き換えてください</span></p></div>
+    <div class="c"><div class="sign" aria-hidden="true"></div><p class="label">© 2026 Ryu Kaneko</p></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var btns=document.querySelectorAll('.filters button'), rows=document.querySelectorAll('.toc li'), c=document.getElementById('count');
+  btns.forEach(function(b){b.addEventListener('click',function(){
+    var f=b.dataset.f,n=0;
+    btns.forEach(function(x){x.setAttribute('aria-pressed',x===b)});
+    rows.forEach(function(r){var show=f==='all'||r.dataset.k===f;r.hidden=!show;if(show)n++});
+    c.textContent=n;
+  })});
+})();
+</script>
+<script>
+/* 見開きの番号：画面に入ったら .in を付けて現す。画面から完全に出たら外し、次に入ったときにもう一度現す */
+(function(){
+  var cuts=document.querySelectorAll('.cut');
+  if (!('IntersectionObserver' in window)) { cuts.forEach(function(c){c.classList.add('in')}); return }
+  var io=new IntersectionObserver(function(es){ es.forEach(function(e){
+    if (e.intersectionRatio>=.6) e.target.classList.add('in');
+    else if (!e.isIntersecting) e.target.classList.remove('in');
+  }) },{threshold:[0,.6]});
+  cuts.forEach(function(c){io.observe(c)});
+})();
+</script>
+<script>
+/* ===== 網点の帯と砂粒 =====
+   帯の写真を網点（印刷の点）で描く。帯が画面の中央に近いほど点が細かくなり写真に近づく。
+   最初の帯だけ、写真の暗い部分から砂粒を作り、スクロールの速さに応じて散らして、止まると戻す。
+   動きを減らす設定・canvas 非対応では何もしない（静止した写真のまま）。 */
+(function(){
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var bands=[].slice.call(document.querySelectorAll('.band'));
+  if (!bands.length || !document.createElement('canvas').getContext) return;
+  var DPR=Math.min(window.devicePixelRatio||1,2), mobile=innerWidth<860;
+  function color(name){return getComputedStyle(document.documentElement).getPropertyValue(name).trim()}
+  var items=[], visible=new Set(), lastY=scrollY, vel=0, raf=0, coarse=0;
+
+  function setup(band,i){
+    var img=band.querySelector('img'), it={band:band,img:img,lum:null,w:0,h:0,sand:false};  // 砂粒は扉の「Portfolio」に移した
+    var c=document.createElement('canvas'); c.className='ht-dots'; c.setAttribute('aria-hidden','true'); band.appendChild(c); it.c=c; it.x=c.getContext('2d');
+    if (it.sand){ var s=document.createElement('canvas'); s.className='ht-sand'; s.setAttribute('aria-hidden','true'); band.appendChild(s); it.s=s; it.sx=s.getContext('2d'); }
+    var src=new Image(); src.decoding='async'; src.src=img.currentSrc||img.src;
+    src.onload=function(){
+      var W=480, H=Math.round(W*src.naturalHeight/src.naturalWidth), o=document.createElement('canvas'); o.width=W; o.height=H;
+      var ox=o.getContext('2d'); ox.drawImage(src,0,0,W,H);
+      var d; try{ d=ox.getImageData(0,0,W,H).data }catch(e){ c.remove(); if(it.s)it.s.remove(); return } // file:// で開いた場合など
+      var l=new Float32Array(W*H);
+      for (var k=0;k<W*H;k++){ l[k]=(d[k*4]*.299+d[k*4+1]*.587+d[k*4+2]*.114)/255 }
+      // コントラストを広げる
+      var mn=1,mx=0; for (k=0;k<l.length;k++){ if(l[k]<mn)mn=l[k]; if(l[k]>mx)mx=l[k] }
+      for (k=0;k<l.length;k++){ l[k]=(l[k]-mn)/((mx-mn)||1) }
+      it.lum=l; it.lw=W; it.lh=H;
+      band.classList.add('ht'); resize(it); if (it.sand) seed(it); draw(it);
+    };
+    items.push(it); io.observe(band);
+  }
+  function resize(it){
+    var r=it.band.getBoundingClientRect(); it.w=r.width; it.h=r.height;
+    it.c.width=Math.round(it.w*DPR); it.c.height=Math.round(it.h*DPR);
+    if (it.s){ it.s.width=Math.round(it.w*DPR); it.s.height=Math.round((it.h+240)*DPR) }
+  }
+  // 帯が画面のどこにあるか：0＝下端から入る、1＝上端から出る
+  function progress(it){ var r=it.band.getBoundingClientRect(); return Math.min(1,Math.max(0,(innerHeight-r.top)/(innerHeight+r.height))) }
+  // 写真の窓（帯の 5 倍の高さの画像を、スクロールに応じて上へずらす：CSS のパララックスと同じ量）
+  function sample(it,u,v,t){
+    var winH=it.lh*.2, top=(it.lh-winH)*t;
+    var x=Math.min(it.lw-1,Math.max(0,Math.round(u*(it.lw-1)))), y=Math.min(it.lh-1,Math.max(0,Math.round(top+v*winH)));
+    return it.lum[y*it.lw+x];
+  }
+  function draw(it){
+    if (!it.lum) return;
+    var t=progress(it), dist=Math.abs(t-.5)*2;              // 中央で 0、端で 1
+    var cell=5+dist*4+coarse*20;                            // 速く動かすと粗く、止まるとゆっくり細かく戻る
+    var x=it.x, w=it.w, h=it.h, ink=color('--ink');
+    x.setTransform(DPR,0,0,DPR,0,0); x.clearRect(0,0,w,h); x.fillStyle=ink;
+    var cols=Math.ceil(w/cell)+1, rows=Math.ceil(h/cell)+1, half=cell/2, row, col, l, r;
+    x.beginPath();
+    for (row=0;row<rows;row++){
+      var off=(row%2)*half;                                 // 網点らしく 1 行おきにずらす
+      for (col=0;col<cols;col++){
+        var cx=col*cell+off, cy=row*cell;
+        l=sample(it,cx/w,cy/h,t); r=half*Math.sqrt(1-l)*1.15;
+        if (r>.35){ x.moveTo(cx+r,cy); x.arc(cx,cy,r,0,6.2832) }
+      }
+    }
+    x.fill();
+    if (it.s) drawSand(it);
+  }
+  // ===== 砂粒（試作：最初の帯だけ）=====
+  function seed(it){
+    var n=mobile?160:420, ps=[], tries=0;
+    while (ps.length<n && tries<n*30){ tries++;
+      var u=Math.random(), v=Math.random();
+      if (sample(it,u,v,.5)<.45) ps.push({u:u,v:v,dx:0,dy:0,vx:0,vy:0,k:.6+Math.random()*.8,s:.8+Math.random()*1.2});
+    }
+    it.ps=ps;
+  }
+  function stepSand(it){
+    var moving=false, kick=Math.max(-40,Math.min(40,vel));
+    it.ps.forEach(function(p){
+      p.vy+= -kick*.06*p.k + (Math.random()-.5)*Math.abs(kick)*.02;
+      p.vx+= (Math.random()-.5)*Math.abs(kick)*.05*p.k;
+      p.vx+= -p.dx*.06; p.vy+= -p.dy*.06;                    // ばねで元の位置へ戻す
+      p.vx*=.86; p.vy*=.86; p.dx+=p.vx; p.dy+=p.vy;
+      if (Math.abs(p.dx)+Math.abs(p.dy)+Math.abs(p.vx)+Math.abs(p.vy)>.3) moving=true;
+    });
+    return moving;
+  }
+  function drawSand(it){
+    var x=it.sx, w=it.w, h=it.h; x.setTransform(DPR,0,0,DPR,0,0); x.clearRect(0,0,w,h+240);
+    x.fillStyle=color('--ink'); x.globalAlpha=.7;
+    it.ps.forEach(function(p){ var d=Math.hypot(p.dx,p.dy); if (d<1.5) return; x.fillRect(p.u*w+p.dx, 120+p.v*h+p.dy, p.s, p.s) });
+    x.globalAlpha=1;
+  }
+  function tick(){
+    raf=0; vel=scrollY-lastY; lastY=scrollY; var again=false;
+    var tg=Math.min(1,Math.abs(vel)/45);                         // 速さ → 粗さ。上がるのは速く、戻るのはゆっくり
+    coarse+= (tg-coarse)*(tg>coarse?.3:.035); if (coarse<.004) coarse=0; else again=true;
+    items.forEach(function(it){
+      if (!visible.has(it.band)) return;
+      if (it.ps && stepSand(it)) again=true;
+      draw(it);
+    });
+    if (again || Math.abs(vel)>.5) raf=requestAnimationFrame(tick);   // 静止したら止める
+  }
+  function req(){ if (!raf) raf=requestAnimationFrame(tick) }
+  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ e.isIntersecting?visible.add(e.target):visible.delete(e.target) }); req() },{rootMargin:'120px 0px'});
+  bands.forEach(setup);
+  addEventListener('scroll',req,{passive:true});
+  addEventListener('resize',function(){ mobile=innerWidth<860; items.forEach(function(it){ if(it.lum){resize(it); if(it.sand)seed(it)} }); req() });
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change',req);
+})();
+</script>
+<script>
+/* ===== 扉の「Portfolio」=====
+   1) 字のインク（実際に塗られた範囲）を左右の枠いっぱいに合わせる。文字送りの幅で合わせると最後の「o」の右の余白ぶん左に寄るため。
+   2) スクロールで罫線の下へ沈んだ字形を砂粒にしてこぼす（罫線＝ふるい）。粒は時間差で少しずつこぼれ、加速せずゆっくり揺れながら舞い落ち、数秒で消える。
+      自動で動き続けるものは作らない：粒がすべて消えたら描画を止める。
+   3) 粒の色はモノトーン（黒〜グレー。ダークモードでは白〜グレー）。 */
+(function(){
+  var h1=document.getElementById('title'), span=h1 && h1.querySelector('span'), cover=document.querySelector('.cover');
+  if (!span) return;
+  var mc=document.createElement('canvas').getContext('2d');
+  function fit(){
+    var cs=getComputedStyle(span), fam=cs.fontFamily, wt=cs.fontWeight;
+    mc.font=wt+' 100px '+fam; try{ mc.letterSpacing='-3.5px' }catch(e){}
+    var m=mc.measureText('Portfolio'), L=m.actualBoundingBoxLeft, R=m.actualBoundingBoxRight;
+    var avail=h1.clientWidth, fs=Math.min(340*1.08, avail*100/(L+R));
+    h1.style.fontSize=fs+'px'; span.style.marginLeft=(L*fs/100)+'px';
+  }
+  function ready(cb){ (document.fonts?document.fonts.ready:Promise.resolve()).then(cb) }
+  ready(function(){ fit(); addEventListener('resize',fit) });
+
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (!(window.CSS && CSS.supports('animation-timeline','scroll()'))) return;
+  if (!document.createElement('canvas').getContext) return;
+  var DPR=Math.min(window.devicePixelRatio||1,2), H=320, MAX=10000;
+  // モノトーン：黒〜グレー。ダークモードでは白〜グレーに反転する
+  var PAL_L=['#111111','#2e2e2e','#4a4a4a','#666666','#808080','#9a9a9a'], PAL_D=['#f2f2f2','#d6d6d6','#b8b8b8','#9a9a9a','#7e7e7e','#666666'];
+  var dark=matchMedia('(prefers-color-scheme: dark)'), PAL=dark.matches?PAL_D:PAL_L;
+  dark.addEventListener('change',function(e){ PAL=e.matches?PAL_D:PAL_L });
+  var c=document.createElement('canvas'); c.className='sift'; c.setAttribute('aria-hidden','true'); cover.appendChild(c);
+  var x=c.getContext('2d'), pts=[], gr=[], raf=0, W=0, lastY=scrollY;
+  function rnd(i){ var t=Math.sin(i*12.9898+78.233)*43758.5453; return t-Math.floor(t) }
+  function build(){
+    var cs=getComputedStyle(span), fs=parseFloat(cs.fontSize), r=span.getBoundingClientRect();
+    var w=Math.ceil(r.width)+4, h=Math.ceil(r.height), o=document.createElement('canvas'); o.width=w; o.height=h;
+    var ox=o.getContext('2d'); ox.font=cs.fontWeight+' '+fs+'px '+cs.fontFamily;
+    try{ ox.letterSpacing=cs.letterSpacing }catch(e){}
+    var m=ox.measureText('Portfolio'), A=m.fontBoundingBoxAscent, D=m.fontBoundingBoxDescent;
+    var lh=parseFloat(cs.lineHeight)||h, base=(lh-(A+D))/2+A;
+    ox.fillText('Portfolio',0,base);
+    var d=ox.getImageData(0,0,w,h).data, step=innerWidth<860?4:5; pts=[];
+    for (var yy=0;yy<h;yy+=step) for (var xx=0;xx<w;xx+=step){
+      if (d[(yy*w+xx)*4+3]>128) pts.push({x:xx,y:yy,armed:true,i:pts.length});
+    }
+    W=cover.getBoundingClientRect().width; c.width=Math.round(W*DPR);
+    c.style.height=H+'px'; c.height=Math.round(H*DPR);
+  }
+  function frame(){
+    raf=0;
+    var cr=cover.getBoundingClientRect(), hr=h1.getBoundingClientRect(), sr=span.getBoundingClientRect();
+    var rule=hr.bottom-cr.top; c.style.top=rule+'px';
+    var top=sr.top-hr.bottom, left=sr.left-cr.left, sunk=new DOMMatrix(getComputedStyle(span).transform).m42;
+    var vel=scrollY-lastY; lastY=scrollY;
+    // 罫線を越えた字形から粒を出す。罫線より上に戻った点はもう一度出せるようにする
+    for (var i=0;i<pts.length;i++){
+      var p=pts[i], depth=top+p.y;
+      if (depth-sunk>0) continue;                                 // 初めから切られていた部分
+      if (depth>0){
+        if (p.armed && gr.length<MAX){
+          p.armed=false; var k=p.i;
+          if (rnd(k+9)<.85)                                       // すべての点からは出さない（細かい砂がさらさら落ちる密度に）
+            gr.push({x:left+p.x, y:Math.min(depth,6), t:.2+rnd(k+1)*.6, vy:.05, ph:rnd(k+5)*6.28, sw:.15+rnd(k+6)*.35,
+                     dx:(rnd(k)-.5)*.25, s:.8+rnd(k+2)*1.4, col:k%PAL.length, wait:Math.floor(rnd(k+7)*60), life:0, max:360+rnd(k+4)*240});
+        }
+      } else p.armed=true;
+    }
+    // 落とす：重力・空気抵抗・床で止まって消える
+    x.setTransform(DPR,0,0,DPR,0,0); x.clearRect(0,0,W,H);
+    var alive=[], groups=PAL.map(function(){return []});
+    for (i=0;i<gr.length;i++){
+      var g=gr[i];
+      if (g.wait>0){ g.wait--; alive.push(g); continue }        // 少しずつ時間差でこぼれる
+      g.life++;
+      g.vy+=(g.t-g.vy)*.04;                                      // 一定のゆっくりした速さに近づく（加速して落ちない）
+      g.y+=g.vy; g.x+=g.dx+Math.sin(g.life*.045+g.ph)*g.sw;       // わずかに揺れながら舞い落ちる
+      var a=Math.min(1,g.life/12)*(1-Math.max(0,(g.life-g.max*.55)/(g.max*.45)));
+      if (a<=0 || g.y>H) continue;
+      g.a=a; alive.push(g); groups[g.col].push(g);
+    }
+    gr=alive;
+    for (var ci=0;ci<PAL.length;ci++){
+      x.fillStyle=PAL[ci];
+      groups[ci].forEach(function(g){ if(!g.a)return; x.globalAlpha=g.a*.85; x.fillRect(g.x,g.y,g.s,g.s) });
+    }
+    x.globalAlpha=1;
+    if (gr.length || Math.abs(vel)>.3) raf=requestAnimationFrame(frame);   // 粒が消えたら止める
+  }
+  function req(){ if (!raf) raf=requestAnimationFrame(frame) }
+  ready(function(){
+    build(); req();
+    addEventListener('scroll',req,{passive:true});
+    addEventListener('resize',function(){ build(); req() });
+  });
+})();
+</script>
+<script>
+/* ===== 終わりの「龍」：砂粒が集まって署名になる =====
+   扉では「Portfolio」が罫線をくぐって砂にほどけ、終わりでは砂粒が集まって書の「龍」になる。
+   粒の位置はスクロール量だけで決まる（ページの最後の 600px で集まりきる）。戻すとまた散る。止まれば描画も止まる。
+   動きを減らす設定・画像を読めない場合（file:// など）は、署名をそのまま表示する。 */
+(function(){
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var foot=document.getElementById('contact'), sign=foot && foot.querySelector('.sign');
+  if (!sign || !document.createElement('canvas').getContext) return;
+  var DPR=Math.min(window.devicePixelRatio||1,2), ABOVE=420, RUN=800;
+  var PAL_L=['#111111','#2e2e2e','#4a4a4a','#666666','#808080','#9a9a9a'], PAL_D=['#f2f2f2','#d6d6d6','#b8b8b8','#9a9a9a','#7e7e7e','#666666'];
+  var dark=matchMedia('(prefers-color-scheme: dark)');
+  var c=document.createElement('canvas'); c.className='gather'; c.setAttribute('aria-hidden','true');
+  var x=c.getContext('2d'), ps=[], raf=0, W=0, H=0;
+  function rnd(i){ var t=Math.sin(i*12.9898+4.1414)*43758.5453; return t-Math.floor(t) }
+  var img=new Image(); img.src='./images/ryu.svg';
+  img.onload=function(){
+    var o=document.createElement('canvas'), w=82*2, h=98*2; o.width=w; o.height=h;
+    var ox=o.getContext('2d'); ox.drawImage(img,0,0,w,h); var d;
+    try{ d=ox.getImageData(0,0,w,h).data }catch(e){ return }
+    for (var yy=0;yy<h;yy+=2.5) for (var xx=0;xx<w;xx+=2.5){
+      if (d[(Math.round(yy)*w+Math.round(xx))*4+3]>110){ var i=ps.length;
+        ps.push({tx:xx/2,ty:yy/2,a:rnd(i)*6.2832,r:80+rnd(i+1)*520,lift:120+rnd(i+2)*300,d:rnd(i+3)*.3,s:.9+rnd(i+4)*1.3,col:i%6,sw:rnd(i+5)*6.2832});
+      }
+    }
+    foot.appendChild(c); sign.style.opacity=0;
+    size(); req();
+    addEventListener('scroll',req,{passive:true});
+    addEventListener('resize',function(){ size(); req() });
+    dark.addEventListener('change',req);
+  };
+  function size(){
+    W=foot.clientWidth; H=foot.offsetHeight+ABOVE;
+    c.style.top=-ABOVE+'px'; c.style.height=H+'px'; c.width=Math.round(W*DPR); c.height=Math.round(H*DPR);
+  }
+  function ease(t){ return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2 }   // 終盤まで散った状態を保ち、最後に寄せる
+  function draw(){
+    raf=0;
+    var max=document.documentElement.scrollHeight-innerHeight, p=Math.min(1,Math.max(0,1-Math.max(0,max-scrollY-4)/RUN));   // 最後の数 px の端数で集まりきらないことを防ぐ
+    var fr=foot.getBoundingClientRect(), sr=sign.getBoundingClientRect();
+    var ox=sr.left-fr.left, oy=sr.top-fr.top+ABOVE;              // 署名の位置（canvas 内）
+    x.setTransform(DPR,0,0,DPR,0,0); x.clearRect(0,0,W,H);
+    sign.style.opacity=Math.max(0,(p-.97)/.03);                       // 集まりきる直前に本物の書へ置き換える
+    if (p<=0 || p>=1) return;
+    var PAL=dark.matches?PAL_D:PAL_L, groups=[[],[],[],[],[],[]];
+    for (var i=0;i<ps.length;i++){
+      var q=ps[i], t=ease(Math.min(1,Math.max(0,(p-q.d)/(1-q.d)))), u=1-t;
+      var X=ox+q.tx+Math.cos(q.a)*q.r*u+Math.sin(q.sw+p*9)*4*u, Y=oy+q.ty-q.lift*u+Math.sin(q.a)*q.r*.35*u;
+      groups[q.col].push(X,Y,q.s, t);
+    }
+    var fade=1-Math.max(0,(p-.97)/.03);
+    for (var k=0;k<6;k++){ x.fillStyle=PAL[k]; var g=groups[k];
+      for (var j=0;j<g.length;j+=4){ x.globalAlpha=(.25+.75*g[j+3])*fade; x.fillRect(g[j],g[j+1],g[j+2],g[j+2]) } }
+    x.globalAlpha=1;
+  }
+  function req(){ if (!raf) raf=requestAnimationFrame(draw) }
+})();
+</script>
+<script>
+/* ===== ヘッダーの「Portfolio」（表紙へ戻る）=====
+   表紙の「Portfolio」の下端がヘッダーの下端を越えて見えなくなるにつれ、帯の下端から上がってくる（48px のスクロールで出きる）。
+   動きを減らす設定では、出し入れを切り替えるだけにする。 */
+(function(){
+  var home=document.querySelector('.head .home'), head=document.querySelector('.head'), h1=document.getElementById('title');
+  if (!home || !h1) return;
+  var still=matchMedia('(prefers-reduced-motion: reduce)').matches, raf=0, last=-1;
+  function upd(){
+    raf=0;
+    var d=head.getBoundingClientRect().bottom-h1.getBoundingClientRect().bottom;   // 表紙の語がヘッダーの下へ隠れた量
+    var p=Math.min(1,Math.max(0,d/48)); if (still) p=p>0?1:0;
+    if (p===last) return; last=p;
+    home.style.setProperty('--p',p.toFixed(3));
+    var off=p===0; home.classList.toggle('off',off);
+    if (off){ home.setAttribute('tabindex','-1'); home.setAttribute('aria-hidden','true') } else { home.removeAttribute('tabindex'); home.removeAttribute('aria-hidden') }
+  }
+  function req(){ if (!raf) raf=requestAnimationFrame(upd) }
+  upd(); addEventListener('scroll',req,{passive:true}); addEventListener('resize',req);
+})();
+</script>
+</body>
+</html>
