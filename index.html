@@ -450,11 +450,11 @@
 <dialog class="sheet" id="sheet" aria-labelledby="sheet-h">
   <div class="sheet-bar">
     <p class="label"><span class="num" id="sheet-no"></span> 資料</p>
-    <button type="button" class="pill" data-sheet-close>閉じる</button>
+    <button type="button" class="icon-btn" aria-label="閉じる" data-sheet-close><svg viewBox="0 0 14 14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1"><path d="M1 1 13 13M13 1 1 13"/></svg></button>
   </div>
   <header class="sheet-head">
     <h2 id="sheet-h" tabindex="-1"></h2>
-    <div class="sheet-tabs" role="group" aria-label="資料の種類"></div>
+    <div class="sheet-tabs seg" role="group" aria-label="資料の種類"></div>
   </header>
   <div class="doc" id="sheet-doc" aria-live="polite"></div>
 </dialog>
@@ -839,7 +839,7 @@
     if (push){ if (dlg.open) history.replaceState({sheet:1},'',hash); else { history.pushState({sheet:1},'',hash); pushed=true } }
     no.textContent=w.no; h.textContent=w.name;
     if (!same) tabs.replaceChildren.apply(tabs,w.docs.map(function(x){
-      var b=document.createElement('button'); b.type='button'; b.className='pill'; b.textContent=x.label; b.dataset.key=x.key;
+      var b=document.createElement('button'); b.type='button'; b.textContent=x.label; b.dataset.key=x.key;
       b.addEventListener('click',function(){show(w.id,x.key,true)}); return b;
     }));
     tabs.querySelectorAll('button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.key===d.key)});

@@ -62,6 +62,19 @@ html.js .head .home.off{visibility:hidden}
   padding:var(--sp-2) var(--sp-3);border-radius:var(--r-pill);cursor:pointer;transition:background-color var(--dur-fast)}
 .filters button:hover,.pill:hover{background:var(--surface)}
 .filters button[aria-pressed="true"],.pill[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+/* ボタンの種別：選択ボタン（ピル md、上）・切り替え（セグメント sm）・アイコンボタン（円 sm）・文字リンク。
+   sm は見た目を --ctl-sm にし、押せる範囲は ::before で --hit まで広げる */
+.icon-btn{position:relative;display:inline-grid;place-items:center;width:var(--ctl-sm);height:var(--ctl-sm);padding:0;background:none;color:var(--ink);
+  border:var(--line) solid var(--rule);border-radius:var(--r-pill);cursor:pointer;transition:background-color var(--dur-fast)}
+.icon-btn::before{content:"";position:absolute;inset:calc((var(--ctl-sm) - var(--hit)) / 2)}
+.icon-btn svg{width:14px;height:14px}  /* × の大きさ（この部品だけの調整値） */
+.icon-btn:hover{background:var(--surface)}
+.seg{display:inline-flex;border:var(--line) solid var(--rule);border-radius:var(--r-pill)}
+.seg button{position:relative;font:inherit;font-size:var(--fs-sm);line-height:1;min-height:calc(var(--ctl-sm) - 2 * var(--line));padding:0 var(--sp-3);
+  background:none;color:var(--ink);border:0;border-radius:var(--r-pill);cursor:pointer;transition:background-color var(--dur-fast)}
+.seg button::before{content:"";position:absolute;inset:calc((var(--ctl-sm) - var(--hit)) / 2) 0}
+.seg button:hover{background:var(--surface)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
 .toc{grid-column:1/13}
 .toc li{border-bottom:var(--line) dashed var(--hair)}
 .toc li[hidden]{display:none}
@@ -187,12 +200,12 @@ html.js .head .home.off{visibility:hidden}
 .sheet.open::backdrop{opacity:1}
 html:has(.sheet[open]){overflow:hidden}
 .sheet-bar{position:sticky;top:0;z-index:1;display:flex;justify-content:space-between;align-items:center;gap:var(--sp-3);
-  background:var(--paper);border-bottom:var(--line) solid var(--rule);padding-block:var(--sp-1)}
+  background:var(--paper);border-bottom:var(--line) solid var(--rule);min-height:var(--head-h)}
 .sheet-head{padding-top:var(--sp-6)}
 .sheet-head h2{font-family:var(--display);font-weight:var(--fw-medium);font-size:var(--fs-toc-title);line-height:1;letter-spacing:var(--ls-heading)}
 .sheet-head h2:focus{outline:0}
 .sheet-head h2:focus-visible{outline:var(--focus-ring) solid var(--ink)}
-.sheet-tabs{display:flex;flex-wrap:wrap;gap:var(--sp-2);margin-top:var(--sp-4)}
+.sheet-tabs{margin-top:var(--sp-4)}
 
 /* 資料の本文。md の見出しは 1 段下げて組む（シートの見出しが h2） */
 .doc{padding-top:var(--sp-2);overflow-wrap:break-word}
