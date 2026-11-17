@@ -43,11 +43,15 @@
       <p class="name">Ryu Kaneko</p>
     </div>
     <div class="career">
+    <!-- 経歴の概要：職歴と同じく、広い画面では常に開き、860px 以下では畳んで「経歴 (N)」で開く。要約の文は畳まない -->
+    <details class="fold roles-fold" open>
+    <summary class="label">経歴</summary>
     <ol class="roles" aria-label="経歴の概要">
       <li><span class="num">1997</span><b>Visual Design</b><span class="label">大阪芸術大学 ビジュアルデザイン学科</span></li>
       <li><span class="num">2001</span><b>UI / Graphic Design</b><span class="label">Freelance</span></li>
       <li><span class="num">2014</span><b>UX / UI · Service Design</b><span class="label">In-house</span></li>
     </ol>
+    </details>
       <p class="summary">ビジュアルデザインを学び、フリーランスの UI デザイナー、事業会社でインハウスのデザイナーとして働いてきました。</p>
     </div>
     <h1 id="title"><span>Portfolio</span></h1>
@@ -55,7 +59,7 @@
   <div class="timeline">
     <div class="grid">
       <!-- 職歴：広い画面では横の時間軸として常に開く。860px 以下では畳み、「職歴 (N)」で開くと 1 列のリストになる -->
-      <details class="tl" open>
+      <details class="fold tl" open>
       <summary class="label">職歴</summary>
       <ol aria-label="職歴">
         <li><span class="num">2001</span><span>フリーランス</span></li>
@@ -517,12 +521,12 @@
 })();
 </script>
 <script>
-/* 職歴：件数を「職歴 (N)」で添える。広い画面では常に開き、860px 以下では閉じた状態から始める */
+/* 扉の経歴・職歴：件数を「経歴 (N)」「職歴 (N)」で添える。広い画面では常に開き、860px 以下では閉じた状態から始める */
 (function(){
-  var d=document.querySelector('.tl'); if (!d) return;
-  d.querySelector('summary').textContent+=' ('+d.querySelectorAll('li').length+')';
+  var folds=document.querySelectorAll('.fold'); if (!folds.length) return;
+  folds.forEach(function(d){ d.querySelector('summary').textContent+=' ('+d.querySelectorAll('li').length+')' });
   var mq=window.matchMedia('(max-width:860px)');
-  function sync(){ d.open=!mq.matches }
+  function sync(){ folds.forEach(function(d){ d.open=!mq.matches }) }
   sync(); mq.addEventListener('change',sync);
 })();
 </script>
