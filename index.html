@@ -91,6 +91,18 @@
 </section>
 
 <!-- ===== 01 Marga ===== -->
+<!-- 資料のシートの動画：録画したときの状態と、場面ごとの開始時刻（秒） -->
+<script type="application/json" id="marga-video">
+{"about":"ツーリングを終えたあと、記録を見返す流れ。地図に過去のルートを重ね、一覧から 1 件を開き、行きたい場所と統計を確かめる。走行中の記録（記録ボタン、Apple Watch）とレシートの読み取りは含まない。",
+ "state":"iPhone 17 Pro のシミュレーターで操作を録画。データは架空のもの（ツーリング 5 件、給油 5 件、行きたい場所 7 件）。",
+ "scenes":[
+  {"t":0,"title":"MAP","text":"過去 1 年のルートを強調して重ねた地図。丸は行きたい場所"},
+  {"t":2,"title":"RIDES","text":"ツーリングの一覧。日付・距離・時間"},
+  {"t":4,"title":"走行の詳細","text":"10 月 25 日のルート（熱海 → 伊豆）と距離・時間・通ったエリア"},
+  {"t":6.4,"title":"WISHLIST","text":"行きたい場所の一覧。訪問済みは取り消し線"},
+  {"t":8.3,"title":"STATS","text":"月別の走行距離と燃費の推移"}
+ ]}
+</script>
 <article id="marga" class="work" aria-labelledby="marga-h">
   <div class="grid">
     <nav class="bar label" aria-label="実績間の移動"><a href="#contents">↑ Contents</a><a href="#suchi">Next: Suchi →</a></nav>
@@ -104,7 +116,7 @@
       <dt>技術</dt><dd>SwiftUI, SwiftData, CloudKit, MapKit, Vision, Swift Charts, WatchConnectivity</dd>
       <dt>依存</dt><dd>外部ライブラリなし</dd>
       <dt>公開</dt><dd><a href="https://apps.apple.com/us/app/marga/id6763526779">App Store</a></dd>
-      <dt>資料</dt><dd><a href="./marga/process.md">開発プロセス</a>、<a href="./marga/technical.md">技術</a>、<a href="./marga/videos/demo.mp4" data-video data-label="動画" data-poster="./marga/videos/demo.jpg" data-caption="シミュレーターで操作を録画。データは架空のもの。">動画（9 秒）</a></dd>
+      <dt>資料</dt><dd><a href="./marga/process.md">開発プロセス</a>、<a href="./marga/technical.md">技術</a>、<a href="./marga/videos/demo.mp4" data-video="marga-video" data-label="動画" data-poster="./marga/videos/demo.jpg">動画（10 秒）</a></dd>
     </dl></div>
     </aside>
     <div class="main">
@@ -842,7 +854,34 @@
     v.src=d.href; if (d.link.dataset.poster) v.poster=d.link.dataset.poster;
     v.setAttribute('aria-label',(cur?cur.w.name:'')+'の操作の動画');
     fig.appendChild(v);
-    if (d.link.dataset.caption){ var c=document.createElement('figcaption'); c.textContent=d.link.dataset.caption; fig.appendChild(c) }
+    /* 録画したときの状態と場面の一覧。場面を押すとその時刻から再生し、再生中は今の場面を示す */
+    var info={}; try { info=JSON.parse(document.getElementById(d.link.dataset.video).textContent) } catch(e){}
+    var side=document.createElement('figcaption'); side.className='doc-video-info';
+    if (info.about){ var a=document.createElement('p'); a.className='about'; a.textContent=info.about; side.appendChild(a) }
+    if (info.state){ var c=document.createElement('p'); c.className='note'; c.textContent=info.state; side.appendChild(c) }
+    var items=[];
+    if (info.scenes&&info.scenes.length){
+      var ol=document.createElement('ol'); ol.className='doc-video-scenes'; ol.setAttribute('aria-label','場面');
+      info.scenes.forEach(function(s){
+        var li=document.createElement('li'), b=document.createElement('button'); b.type='button';
+        var m=Math.floor(s.t/60), sec=Math.floor(s.t%60);
+        b.innerHTML='<span class="t num"></span><span class="h"></span><span class="d"></span>';
+        b.children[0].textContent=m+':'+(sec<10?'0':'')+sec; b.children[1].textContent=s.title; b.children[2].textContent=s.text;
+        b.addEventListener('click',function(){ seek(s.t) });
+        li.appendChild(b); ol.appendChild(li); items.push({t:s.t,b:b});
+      });
+      side.appendChild(ol);
+    }
+    fig.appendChild(side);
+    function seek(t){
+      var go=function(){ v.currentTime=t; v.play() };
+      if (v.readyState>=1) go(); else { v.preload='metadata'; v.addEventListener('loadedmetadata',go,{once:true}); v.load() }
+    }
+    function mark(){
+      var now=null; items.forEach(function(x){ if (v.currentTime+0.05>=x.t) now=x });
+      items.forEach(function(x){ if (x===now) x.b.setAttribute('aria-current','true'); else x.b.removeAttribute('aria-current') });
+    }
+    v.addEventListener('timeupdate',mark); v.addEventListener('seeked',mark);
     doc.replaceChildren(fig);
   }
   function load(w,d){
