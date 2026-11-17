@@ -196,8 +196,13 @@ html.js .head .home.off{visibility:hidden}
   position:fixed;inset:0 0 0 auto;width:calc(100vw - var(--gutter) - 3 * var(--c) - 2 * var(--col-gap));max-width:none;height:100%;max-height:none;margin:0;
   border:0;border-left:var(--line) solid var(--rule);background:var(--paper);color:var(--ink);
   padding:0 var(--gutter) var(--sp-section) calc(var(--c) + 2 * var(--col-gap));overflow-y:auto;overscroll-behavior:contain;
-  transform:translateX(100%);transition:transform var(--dur-sheet) var(--ease-sheet)}
+  transform:translateX(100%);
+  transition:transform var(--dur-sheet) var(--ease-sheet),
+    --paper var(--dur-dim) var(--ease-dim),--ink var(--dur-dim) var(--ease-dim),--ink-2 var(--dur-dim) var(--ease-dim),
+    --rule var(--dur-dim) var(--ease-dim),--hair var(--dur-dim) var(--ease-dim),--surface var(--dur-dim) var(--ease-dim)}
 .sheet.open{transform:none}
+/* 動画を選んでいる間だけ、シートの中をダークの色にする（劇場の暗転）。見開きと背後の面はそのまま */
+.sheet.is-dark{--paper:var(--d-paper);--ink:var(--d-ink);--ink-2:var(--d-ink-2);--rule:var(--d-rule);--hair:var(--d-hair);--surface:var(--d-surface);color-scheme:dark}
 .sheet::backdrop{background:var(--scrim);opacity:0;transition:opacity var(--dur-sheet) var(--ease-sheet)}
 .sheet.open::backdrop{opacity:1}
 html:has(.sheet[open]){overflow:hidden}

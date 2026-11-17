@@ -85,14 +85,28 @@
   --ease-reveal:cubic-bezier(.25, .6, .2, 1);
   --dur-sheet:.3s;     /* 資料のシートの開閉（画面遷移） */
   --ease-sheet:cubic-bezier(.2, .7, .2, 1);
+  --dur-dim:.8s;       /* 資料のシートの暗転（動画を選んだとき） */
+  --ease-dim:cubic-bezier(0, 0, .2, 1);  /* イーズアウト：すっと暗くなり、ゆっくり落ち着く */
 
   /* ---------- 重なり ---------- */
   --scrim:rgb(255 255 255 / .45);  /* シートの背後の見開きを薄くする面 */
+
+  /* ---------- ダークの色（OS のダークモードと、動画を見るときのシートの暗転で使う） ---------- */
+  --d-paper:#0f0f0f; --d-ink:#f2f2f2; --d-ink-2:#8e8e8e; --d-rule:#f2f2f2; --d-hair:#3a3a3a; --d-surface:#1c1c1c;
 }
 
 @media (prefers-color-scheme: dark){
   :root{
-    --paper:#0f0f0f; --ink:#f2f2f2; --ink-2:#8e8e8e; --rule:#f2f2f2; --hair:#3a3a3a; --surface:#1c1c1c;
+    --paper:var(--d-paper); --ink:var(--d-ink); --ink-2:var(--d-ink-2); --rule:var(--d-rule); --hair:var(--d-hair); --surface:var(--d-surface);
     --scrim:rgb(15 15 15 / .55);
   }
 }
+
+/* 色のトークンを「色」として登録し、切り替えを補間できるようにする（シートの暗転のため）。
+   未対応のブラウザでは補間せず、すぐに切り替わる */
+@property --paper{syntax:"<color>";inherits:true;initial-value:#ffffff}
+@property --ink{syntax:"<color>";inherits:true;initial-value:#111111}
+@property --ink-2{syntax:"<color>";inherits:true;initial-value:#6b6b6b}
+@property --rule{syntax:"<color>";inherits:true;initial-value:#111111}
+@property --hair{syntax:"<color>";inherits:true;initial-value:#d6d6d6}
+@property --surface{syntax:"<color>";inherits:true;initial-value:#f3f3f3}

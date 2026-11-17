@@ -911,6 +911,7 @@
       b.addEventListener('click',function(){show(w.id,x.key,true)}); return b;
     }));
     tabs.querySelectorAll('button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.key===d.key)});
+    dlg.classList.toggle('is-dark',!!d.video);  /* 動画のときだけシートを暗転する */
     load(w,d);
     if (!dlg.open){
       if (!opener) opener=d.link;
@@ -922,9 +923,9 @@
     var back=opener; opener=null; cur=null; pushed=false;
     doc.querySelectorAll('video').forEach(function(v){v.pause()});
     dlg.classList.remove('open');
-    var done=function(){ if (dlg.classList.contains('open')) return; dlg.close(); if (back) back.focus({preventScroll:true}) };
+    var done=function(){ if (dlg.classList.contains('open')) return; dlg.close(); dlg.classList.remove('is-dark'); if (back) back.focus({preventScroll:true}) };
     if (reduce.matches) done();
-    else { var t=setTimeout(done,600); dlg.addEventListener('transitionend',function f(e){ if (e.target!==dlg) return; dlg.removeEventListener('transitionend',f); clearTimeout(t); done() }) }
+    else { var t=setTimeout(done,600); dlg.addEventListener('transitionend',function f(e){ if (e.target!==dlg||e.propertyName!=='transform') return; dlg.removeEventListener('transitionend',f); clearTimeout(t); done() }) }
   }
   /* 閉じる：自分で積んだ履歴なら戻る（popstate で閉じる）。直リンクで開いたときは作品の見開きの URL に置き換える */
   function requestClose(){
