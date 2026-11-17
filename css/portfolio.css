@@ -284,6 +284,9 @@ html:has(.sheet[open]){overflow:hidden}
 /* ===== Responsive ===== */
 @media (max-width:860px){
   .cover .intro,.cover .career{grid-column:1/13}
+  /* 肩書・名前 → 経歴を上に詰めて 1 つのまとまりにし、余白はすべて「Portfolio」の上に回す（3 行を均等に散らさない） */
+  .cover > .grid:first-child{align-content:stretch;grid-template-rows:auto auto 1fr}
+  .cover h1{align-self:end}
   .cover .career{margin-top:var(--sp-6)}
   /* 経歴・職歴：畳んだ状態から「経歴 (N)」「職歴 (N)」で開く。職歴は開くと 1 行に 1 社の縦リスト（経歴の概要と同じ組み） */
   .fold summary{display:flex;align-items:center;justify-content:space-between;min-height:var(--hit);cursor:pointer;list-style:none}
