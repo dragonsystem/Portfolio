@@ -115,6 +115,7 @@
       <p>走行中は iPhone を操作できないため、記録の開始と停止を Apple Watch から行えるようにした。iPhone と Watch のどちらから操作しても同じ処理を通る構成にし、記録が食い違わないようにした。</p>
       <p>給油はレシートを撮影すると OCR で入力される。手入力の手間を減らし、記録を続けやすくするため。</p>
       <p>地図上のルートは、記録中・過去・強調で色を分けた。過去のルートは不透明度を下げ、記録中のルートが埋もれないようにした。</p>
+      <p class="origin">名前はサンスクリット語の <span lang="sa">मार्ग</span>（道）から。</p>
     </div>
     <div class="feat"><h3>主な機能</h3><ul>
       <li><b>ルート記録</b><span>GPS で走行軌跡を記録し、エリア名を自動で付ける</span></li>
@@ -162,6 +163,7 @@
       <h3>設計意図</h3>
       <p>車体の金属で方位センサーがずれることがあるため、コンパスリングに太陽と月の方位を重ねて表示し、その場でずれを確認できるようにした。</p>
       <p>距離の単位は端末の地域設定に合わせて m / km と ft / mi を切り替える。日本語と英語に対応。</p>
+      <p class="origin">名前はサンスクリット語の <span lang="sa">सूचि</span>（針、指し示すもの）から。</p>
     </div>
     <div class="feat"><h3>主な機能</h3><ul>
       <li><b>コンパスナビ</b><span>方角と直線距離を全画面で表示</span></li>
@@ -248,7 +250,6 @@
     <header class="ttl">
       <h2 id="tattva-h">Tattva</h2>
       <p class="sub">画像とテキストから、AI でデザイン仕様書と UX 設計書を生成する macOS アプリ。</p>
-      <p class="origin">名前はサンスクリット語の <span lang="sa">तत्त्व</span>（本質）から。</p>
     </header>
     <div class="body">
       <h3>概要</h3>
@@ -256,6 +257,7 @@
       <h3>設計意図</h3>
       <p>DESIGN.md を先に生成し、その数値を BLUEPRINT.md に引き継ぐ 2 段階にした。2 つの文書でカラーコードやフォントサイズがそろう。</p>
       <p>API キーは利用者のものを macOS の Keychain に保存し、サーバーを持たない構成にした。</p>
+      <p class="origin">名前はサンスクリット語の <span lang="sa">तत्त्व</span>（本質）から。</p>
     </div>
     <div class="feat"><h3>主な機能</h3><ul>
       <li><b>3 パターン生成</b><span>Precision / Organic / Expressive の 3 方向</span></li>
@@ -341,13 +343,13 @@
     <header class="ttl">
       <h2 id="satori-h">Satori</h2>
       <p class="sub">選択したフレームの構造を AI で解析し、その場で直す Figma プラグイン。</p>
-      <p class="origin">名前は仏教の「悟り」（直観的に理解する）から。Sakshi と対になる。</p>
     </header>
     <div class="body">
       <h3>概要</h3>
       <p>エンジニアに渡す前のデザインデータには、名前のないレイヤー、Auto Layout を使っていない配置、不要なグループなどが残りやすい。選んだフレームの画像とレイヤー構造を Gemini に渡して解析し、問題を見つけて修正する。</p>
       <h3>設計意図</h3>
       <p>まとめて修正する前に、Figma のバージョン履歴を自動で保存する。AI の判断の信頼度を表示し、低いときは注意を出す。</p>
+      <p class="origin">名前は仏教の「悟り」（直観的に理解する）から。Sakshi と対になる。</p>
     </div>
     <div class="feat"><h3>主な機能</h3><ul>
       <li><b>構造解析</b><span>画像とレイヤー構造を同時に解析</span></li>
@@ -380,13 +382,13 @@
     <header class="ttl">
       <h2 id="sakshi-h">Sakshi</h2>
       <p class="sub">デザインがデザインシステムに沿って作られているかを監査する Figma プラグイン。</p>
-      <p class="origin">名前はサンスクリット語の <span lang="sa">साक्षी</span>（目撃者、純粋な観察者）から。Satori と対になる。</p>
     </header>
     <div class="body">
       <h3>概要</h3>
       <p>選んだフレームの中で、ライブラリのコンポーネント・スタイル・Variables が意図どおりに使われているかを調べて報告する。</p>
       <h3>設計意図</h3>
       <p>ルールにもとづくチェックを基本にし、Gemini による解析は必要なときだけ加えられるようにした。判断の基準は利用者が決め、各チェックを有効・無効にできる。</p>
+      <p class="origin">名前はサンスクリット語の <span lang="sa">साक्षी</span>（目撃者、純粋な観察者）から。Satori と対になる。</p>
     </div>
     <div class="feat"><h3>主な機能</h3><ul>
       <li><b>壊れたインスタンス</b><span>元のコンポーネントが失われたものを検出</span></li>
