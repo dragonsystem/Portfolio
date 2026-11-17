@@ -50,6 +50,9 @@
   </div>
   <div class="timeline">
     <div class="grid">
+      <!-- 職歴：広い画面では横の時間軸として常に開く。860px 以下では畳み、「職歴 (N)」で開くと 1 列のリストになる -->
+      <details class="tl" open>
+      <summary class="label">職歴</summary>
       <ol aria-label="職歴">
         <li><span class="num">2001</span><span>フリーランス</span></li>
         <li><span class="num">2014</span><span>Yahoo! JAPAN</span></li>
@@ -59,6 +62,7 @@
         <li><span class="num">2022</span><span>トヨタファイナンス</span></li>
         <li><span class="num">2024</span><span>F&amp;M net（現職）</span></li>
       </ol>
+      </details>
     </div>
   </div>
 </section>
@@ -473,6 +477,16 @@
     btns.forEach(function(x){x.setAttribute('aria-pressed',x===b)});
     rows.forEach(function(r){r.hidden=!(f==='all'||r.dataset.k===f)});
   })});
+})();
+</script>
+<script>
+/* 職歴：件数を「職歴 (N)」で添える。広い画面では常に開き、860px 以下では閉じた状態から始める */
+(function(){
+  var d=document.querySelector('.tl'); if (!d) return;
+  d.querySelector('summary').textContent+=' ('+d.querySelectorAll('li').length+')';
+  var mq=window.matchMedia('(max-width:860px)');
+  function sync(){ d.open=!mq.matches }
+  sync(); mq.addEventListener('change',sync);
 })();
 </script>
 <script>

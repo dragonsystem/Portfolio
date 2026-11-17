@@ -45,7 +45,9 @@ html.js .head .home.off{visibility:hidden}
 .roles li{display:grid;grid-template-columns:3.5em 1fr auto;gap:var(--sp-3);border-top:var(--line) dashed var(--hair);padding:var(--sp-2) 0;font-size:var(--fs-md)}
 .roles li b{font-weight:var(--fw-medium)}
 .timeline{border-top:var(--line) solid var(--rule)}
-.timeline ol{grid-column:1/13;display:grid;grid-template-columns:minmax(6em,13fr) minmax(6.5em,5fr) repeat(3,minmax(4.6em,1fr)) minmax(10.5em,2fr) minmax(7em,2.6fr);padding-block:var(--sp-2) var(--sp-4)}
+.tl{grid-column:1/13}
+.tl summary{display:none}
+.timeline ol{display:grid;grid-template-columns:minmax(6em,13fr) minmax(6.5em,5fr) repeat(3,minmax(4.6em,1fr)) minmax(10.5em,2fr) minmax(7em,2.6fr);padding-block:var(--sp-2) var(--sp-4)}
 .timeline li{border-left:var(--line) dashed var(--hair);padding:0 var(--sp-2);font-size:var(--fs-xs);line-height:var(--lh-tight);min-width:0}
 .timeline li:first-child{border-left:0;padding-left:0}
 .timeline li .num{display:block;font-size:var(--fs-base)}
@@ -249,8 +251,15 @@ html:has(.sheet[open]){overflow:hidden}
 @media (max-width:860px){
   .cover .intro,.cover .career{grid-column:1/13}
   .cover .career{margin-top:var(--sp-6)}
-  .timeline ol{grid-template-columns:1fr 1fr;row-gap:var(--sp-3)}
-  .timeline li:nth-child(odd){border-left:0;padding-left:0}
+  /* 職歴：畳んだ状態から「職歴 (N)」で開く。開くと 1 行に 1 社の縦リスト（経歴の概要と同じ組み） */
+  .tl summary{display:flex;align-items:center;justify-content:space-between;min-height:var(--hit);cursor:pointer;list-style:none}
+  .tl summary::-webkit-details-marker{display:none}
+  .tl summary::after{content:"+";font-family:var(--display);font-size:var(--fs-base);letter-spacing:0;color:var(--ink)}
+  .tl[open] summary::after{content:"−"}
+  .tl summary:hover{color:var(--ink)}
+  .timeline ol{display:block;padding-block:0 var(--sp-4)}
+  .timeline li{display:grid;grid-template-columns:3.5em 1fr;gap:var(--sp-3);align-items:baseline;border-left:0;border-top:var(--line) dashed var(--hair);padding:var(--sp-2) 0;font-size:var(--fs-md)}
+  .timeline li .num{font-size:var(--fs-md);color:var(--ink)}
   .toc a{grid-template-columns:2.5em 1fr auto;row-gap:var(--sp-2)}
   .toc .no{grid-column:1;grid-row:1/3;font-size:1.75rem}.toc .t{grid-column:2/4}
   .toc .d{grid-column:2/3}.toc .p{grid-column:3;grid-row:2}
