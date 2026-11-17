@@ -220,6 +220,10 @@ html:has(.sheet[open]){overflow:hidden}
 .doc h3 + *,.doc h4 + *,.doc h5 + *{margin-top:var(--sp-3)}
 .doc p,.doc ul,.doc ol,.doc pre,.doc .tbl-wrap,.doc blockquote{margin-top:var(--sp-3)}
 .doc hr{display:none}
+/* 資料の動画：画面の高さに収まる大きさにし、縦長の画面録画をそのままの比率で見せる */
+.doc-video{margin-top:var(--sp-6)}
+.doc-video video{display:block;width:auto;max-width:100%;height:calc(100dvh - var(--head-h) - 2 * var(--sp-section));min-height:var(--video-min-h);aspect-ratio:600 / 1304;background:var(--surface);border-radius:var(--r-lg)}
+.doc-video figcaption{font-size:var(--fs-xs);line-height:var(--lh-snug);color:var(--ink-2);margin-top:var(--sp-2)}
 .doc ul > li{position:relative;padding-left:1.2em}
 .doc ul > li::before{content:"";position:absolute;left:.3em;top:.8em;width:.35em;height:var(--line);background:var(--ink)}
 .doc ol{list-style:decimal;padding-left:1.6em}

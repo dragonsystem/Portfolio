@@ -104,7 +104,7 @@
       <dt>技術</dt><dd>SwiftUI, SwiftData, CloudKit, MapKit, Vision, Swift Charts, WatchConnectivity</dd>
       <dt>依存</dt><dd>外部ライブラリなし</dd>
       <dt>公開</dt><dd><a href="https://apps.apple.com/us/app/marga/id6763526779">App Store</a></dd>
-      <dt>資料</dt><dd><a href="./marga/process.md">開発プロセス</a>、<a href="./marga/technical.md">技術</a></dd>
+      <dt>資料</dt><dd><a href="./marga/process.md">開発プロセス</a>、<a href="./marga/technical.md">技術</a>、<a href="./marga/videos/demo.mp4" data-video data-label="動画" data-poster="./marga/videos/demo.jpg" data-caption="シミュレーターで操作を録画。データは架空のもの。">動画（9 秒）</a></dd>
     </dl></div>
     </aside>
     <div class="main">
@@ -799,11 +799,12 @@
 
   /* 見開きごとに、作品名・番号・資料のリンクを集める */
   document.querySelectorAll('.work').forEach(function(w){
-    var links=w.querySelectorAll('.spec a[href$=".md"]'); if (!links.length) return;
+    var links=w.querySelectorAll('.spec a[href$=".md"], .spec a[data-video]'); if (!links.length) return;
     var docs=[];
     links.forEach(function(a){
-      var key=a.getAttribute('href').split('/').pop().replace(/\.md$/,'');
-      docs.push({key:key,label:a.textContent,href:a.getAttribute('href'),link:a});
+      var video=a.hasAttribute('data-video');
+      var key=video?'video':a.getAttribute('href').split('/').pop().replace(/\.md$/,'');
+      docs.push({key:key,label:a.dataset.label||a.textContent,href:a.getAttribute('href'),link:a,video:video});
       a.addEventListener('click',function(e){
         if (e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||e.button!==0) return;
         e.preventDefault(); opener=a; show(w.id,key,true);
@@ -832,7 +833,20 @@
     });
     return box;
   }
+  /* 動画：自動では再生しない。最初の静止画と操作部を出し、見る人が再生する。読み込みも再生を押すまで始めない */
+  function showVideo(d){
+    ++seq;
+    var fig=document.createElement('figure'); fig.className='doc-video';
+    var v=document.createElement('video');
+    v.controls=true; v.playsInline=true; v.muted=true; v.preload='none';
+    v.src=d.href; if (d.link.dataset.poster) v.poster=d.link.dataset.poster;
+    v.setAttribute('aria-label',(cur?cur.w.name:'')+'の操作の動画');
+    fig.appendChild(v);
+    if (d.link.dataset.caption){ var c=document.createElement('figcaption'); c.textContent=d.link.dataset.caption; fig.appendChild(c) }
+    doc.replaceChildren(fig);
+  }
   function load(w,d){
+    if (d.video) return showVideo(d);
     var my=++seq, url=new URL(d.href,location.href).href;
     doc.innerHTML='<p class="state label">読み込み中</p>';
     (cache[url]||(cache[url]=fetch(url).then(function(r){if(!r.ok)throw r.status;return r.text()}))).then(function(t){
@@ -867,6 +881,7 @@
   function hide(){
     if (!dlg.open) return;
     var back=opener; opener=null; cur=null; pushed=false;
+    doc.querySelectorAll('video').forEach(function(v){v.pause()});
     dlg.classList.remove('open');
     var done=function(){ if (dlg.classList.contains('open')) return; dlg.close(); if (back) back.focus({preventScroll:true}) };
     if (reduce.matches) done();
