@@ -209,6 +209,16 @@
 </article>
 
 <!-- ===== 03 Record Recorder ===== -->
+<script type="application/json" id="record-recorder-video">
+{"about":"登録したコレクションを眺め、1 枚を開き、並び替えと統計を確かめる流れ。ジャケットの撮影から自動入力（文字認識・バーコード → Discogs 検索）は含まない。",
+ "state":"iPhone 17 Pro のシミュレーターで操作を録画。レコードとジャケットは架空のもの（Gemini で作成した 7 枚）。",
+ "scenes":[
+  {"t":0,"title":"コレクション","text":"ジャケットのグリッド。タイトル・アーティスト・年代・ジャンル"},
+  {"t":4.3,"title":"詳細","text":"1 枚を開いた状態。お気に入り、Apple Music での検索"},
+  {"t":10,"title":"並び替え","text":"年代順に並べ替える"},
+  {"t":14,"title":"統計","text":"総枚数・お気に入りの数と、ジャンル・年代の分布"}
+ ]}
+</script>
 <div class="band" aria-hidden="true"><img src="./images/photos/band-03.jpg" width="2400" height="800" alt="" loading="lazy"></div>
 <article id="record-recorder" class="work" aria-labelledby="rr-h">
   <div class="grid">
@@ -223,7 +233,7 @@
       <dt>技術</dt><dd>SwiftUI, SwiftData, CloudKit, Vision, Swift Charts, Discogs API</dd>
       <dt>依存</dt><dd>外部ライブラリなし</dd>
       <dt>公開</dt><dd><a href="https://apps.apple.com/us/app/record-recorder/id6766056660">App Store</a></dd>
-      <dt>資料</dt><dd><a href="./record-recorder/process.md">開発プロセス</a>、<a href="./record-recorder/technical.md">技術</a></dd>
+      <dt>資料</dt><dd><a href="./record-recorder/process.md">開発プロセス</a>、<a href="./record-recorder/technical.md">技術</a>、<a href="./record-recorder/videos/demo.mp4" data-video="record-recorder-video" data-label="動画" data-poster="./record-recorder/videos/demo.jpg">動画（16 秒）</a></dd>
     </dl></div>
     </aside>
     <div class="main">
