@@ -13,229 +13,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- Geist / Zen Kaku Gothic New: SIL Open Font License 1.1 -->
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
-<style>
-/* ===== Tokens ===== */
-:root{
-  --paper:#ffffff; --ink:#111111; --ink-2:#6b6b6b; --rule:#111111; --hair:#d6d6d6; --surface:#f3f3f3;
-  --display:"Geist", "Zen Kaku Gothic New", sans-serif;
-  --gothic:"Zen Kaku Gothic New", system-ui, sans-serif;
-  --gutter:clamp(16px, 3vw, 40px);
-  --col-gap:clamp(16px, 1.6vw, 24px);
-}
-@media (prefers-color-scheme: dark){
-  :root{ --paper:#0f0f0f; --ink:#f2f2f2; --ink-2:#8e8e8e; --rule:#f2f2f2; --hair:#3a3a3a; --surface:#1c1c1c; }
-}
-
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--paper);color:var(--ink);font-family:var(--gothic);font-size:1rem;line-height:1.7;
-  font-feature-settings:"palt";-webkit-font-smoothing:antialiased;overflow-x:hidden}
-a{color:inherit}
-img{display:block;max-width:100%;height:auto}
-ul,ol{list-style:none}
-.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--col-gap);padding-inline:var(--gutter)}
-.label{font-size:.8125rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
-.num{font-family:var(--display);font-variant-numeric:lining-nums tabular-nums}
-.skip{position:absolute;left:-999px}.skip:focus{left:16px;top:16px;background:var(--ink);color:var(--paper);padding:8px 16px;z-index:9}
-:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
-.ico{flex:none;border-radius:22.5%;filter:grayscale(1);transition:filter .2s}
-
-/* ===== Header ===== */
-.head{position:sticky;top:0;z-index:5;background:var(--paper);border-bottom:1px solid var(--rule)}
-.head nav{grid-column:7/13;display:flex;gap:24px;justify-content:flex-end}
-/* 表紙へ戻るリンク：表紙の「Portfolio」が年表の罫線の下へ沈むと、入れ替わりに帯の下端の罫線から上がってくる。
-   位置はスクロール量で決まり（JS が --p を 0〜1 で渡す）、表示しきったら止まる。隠れている間は押せない・フォーカスしない */
-.head .home{grid-column:1/7;justify-self:start;align-self:stretch;overflow:clip;font-family:var(--display);font-weight:800;font-size:1.125rem;letter-spacing:-.02em;line-height:1}
-.head .home:hover{text-decoration:none}
-.head .home span{display:block}
-html.js .head .home span{transform:translateY(calc((1 - var(--p,0)) * 110%))}
-html.js .head .home.off{visibility:hidden}
-.head .home:hover span,.head .home:focus-visible span{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:2px}
-.head a{text-decoration:none;display:inline-flex;align-items:center;min-height:44px}
-.head a:hover{text-decoration:underline;text-underline-offset:4px}
-
-/* ===== Cover ===== */
-.cover{position:relative;min-height:calc(100svh - 45px);display:flex;flex-direction:column;justify-content:space-between;padding-top:clamp(24px,4vw,48px)}
-.cover > .grid:first-child{flex:1;align-content:space-between}
-/* 肩書 → 名前 → 紹介文 を 1 つのまとまりとして読む */
-.cover .intro{grid-column:1/6}
-.cover .role{font-size:1rem;font-weight:500;line-height:1.5}
-.cover .name{font-size:1rem;color:var(--ink-2)}
-/* 「Portfolio」の下端を年表の罫線で切る */
-.cover h1{grid-column:1/13;font-family:var(--display);font-weight:800;font-size:min(340px,calc((100vw - 2 * var(--gutter)) / 4.42));line-height:.74;letter-spacing:-.035em;height:.6em;overflow:clip;margin-top:clamp(48px,10vh,120px);white-space:nowrap}
-.cover h1 span{display:inline-block}
-.cover .career{grid-column:7/13;align-self:start}
-.cover .summary{font-size:.875rem;color:var(--ink-2);margin-top:16px}
-.roles li{display:grid;grid-template-columns:3.5em 1fr auto;gap:16px;border-top:1px dashed var(--hair);padding:8px 0;font-size:.9375rem}
-.roles li b{font-weight:500}
-.timeline{border-top:1px solid var(--rule)}
-.timeline ol{grid-column:1/13;display:grid;grid-template-columns:minmax(6em,13fr) minmax(6.5em,5fr) repeat(3,minmax(4.6em,1fr)) minmax(10.5em,2fr) minmax(7em,2.6fr);padding-block:8px 24px}
-.timeline li{border-left:1px dashed var(--hair);padding:0 8px;font-size:.8125rem;line-height:1.5;min-width:0}
-.timeline li:first-child{border-left:0;padding-left:0}
-.timeline li .num{display:block;font-size:1rem}
-.timeline li span{display:block;color:var(--ink-2)}
-
-/* ===== Contents ===== */
-.contents{padding-block:clamp(64px,10vw,136px)}
-.sec-title{grid-column:1/13;display:flex;align-items:baseline;gap:16px;border-bottom:1px solid var(--rule);padding-bottom:16px}
-.sec-title h2{font-family:var(--display);font-weight:500;font-size:clamp(44px,7vw,112px);line-height:.9;letter-spacing:-.02em}
-.sec-title .ja{font-size:.9375rem;color:var(--ink-2)}
-.purpose{grid-column:1/13;margin-top:16px}
-.filters{grid-column:1/13;display:flex;flex-wrap:wrap;gap:8px;padding-block:16px}
-.filters button{font:inherit;font-size:.875rem;min-height:44px;background:none;color:var(--ink);border:1px solid var(--rule);
-  padding:8px 16px;border-radius:999px;cursor:pointer;transition:background-color .15s}
-.filters button:hover{background:var(--surface)}
-.filters button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
-.filters .count{margin-left:auto;align-self:center}
-.toc{grid-column:1/13}
-.toc li{border-bottom:1px dashed var(--hair)}
-.toc li[hidden]{display:none}
-.toc a{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--col-gap);align-items:center;
-  padding:16px 8px;text-decoration:none;transition:background-color .15s}
-/* 目次の番号：見開きの番号と同じく、右側を縦線で切る。選択すると切り口の側から現れ直す */
-.toc .no{grid-column:1/2;align-self:stretch;display:flex;align-items:center;justify-content:flex-end;border-right:1px solid var(--rule);clip-path:inset(-8px 0 -8px -8px);font-family:var(--display);font-weight:800;font-size:clamp(2rem,3.6vw,3.5rem);line-height:.8;letter-spacing:-.04em;color:var(--ink-2)}
-.toc .no > b{font-weight:inherit;margin-right:-.22em}
-.toc a:hover .no,.toc a:focus-visible .no{color:var(--ink)}
-.toc .t{grid-column:2/7;display:flex;align-items:center;gap:.4em;font-family:var(--display);font-weight:500;font-size:clamp(1.75rem,3.4vw,3.25rem);line-height:1}
-.toc .t .ico{width:.95em;height:.95em}
-.toc .d{grid-column:7/10;font-size:.9375rem;line-height:1.6}
-.toc .p{grid-column:10/12;text-align:right;font-size:.875rem;line-height:1.5}
-.toc .p .label{display:block}
-.toc .go{grid-column:12/13;justify-self:end;font-family:var(--display);font-size:1.5rem;opacity:0;transition:opacity .15s}
-.toc a:hover,.toc a:focus-visible{background:var(--surface)}
-.toc a:hover .ico,.toc a:focus-visible .ico{filter:none}
-.toc a:hover .go,.toc a:focus-visible .go{opacity:1}
-
-/* ===== Work ===== */
-/* 12 列 = 左レール 3 列 + 余白 1 列 + 本文 8 列 */
-.work{position:relative;view-timeline:--work;border-top:1px solid var(--rule);padding-bottom:clamp(64px,10vw,136px);scroll-margin-top:45px}
-.work .bar{grid-column:1/13;display:flex;justify-content:space-between;align-items:center;gap:16px;border-bottom:1px dashed var(--hair)}
-.work .bar a{text-decoration:none;display:inline-flex;align-items:center;min-height:44px}
-.work .bar a:hover{text-decoration:underline;text-underline-offset:4px}
-/* 左レール：番号・アイコン・データ。スクロール中も作品の識別子として残る */
-.rail{grid-column:1/4;align-self:start;position:sticky;top:77px;margin-top:40px;border-right:1px solid var(--rule)}
-/* 番号は罫線で切る。罫線＝レールと本文の境目 */
-/* 右（罫線側）だけを切る。上下左はぼかしがはみ出しても切らない */
-.cut{clip-path:inset(-64px 0 -64px -64px);view-timeline:--num}
-.cut .no{display:block;white-space:nowrap;font-family:var(--display);font-weight:800;font-size:clamp(160px,23vw,300px);line-height:.74;letter-spacing:-.04em;color:var(--ink);text-align:right;margin-right:-.24em}
-.rail .of{font-size:.8125rem;color:var(--ink-2);margin-top:16px}
-.rail > :not(.cut){margin-right:24px}
-.rail .app{display:block;width:min(100%,144px);aspect-ratio:1;margin-top:32px;border-radius:22.5%;filter:grayscale(1);transition:filter .2s}
-.rail:hover .app{filter:none}
-.spec{margin-top:32px;font-size:.875rem}
-.spec dl{display:grid;grid-template-columns:4.5em 1fr;border-top:1px solid var(--rule)}
-.spec dt,.spec dd{border-bottom:1px dashed var(--hair);padding:8px 0}
-.spec dt{color:var(--ink-2)}
-.spec a{text-underline-offset:3px;display:inline-block;padding-block:4px}
-/* 本文：8 列のサブグリッド */
-.main{grid-column:5/13;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));column-gap:var(--col-gap);margin-top:40px}
-.ttl{grid-column:1/9}
-.work h2{font-family:var(--display);font-weight:500;font-size:clamp(48px,7.5vw,128px);line-height:.9;letter-spacing:-.02em}
-.work .sub{font-size:clamp(1.0625rem,1.5vw,1.25rem);margin-top:24px;max-width:36em}
-.work .origin{font-size:.875rem;color:var(--ink-2);margin-top:8px}
-.body{grid-column:1/5;margin-top:48px}
-.feat{grid-column:5/9;margin-top:48px}
-.body h3,.feat h3{font-size:1.0625rem;font-weight:700;margin-bottom:8px}
-.body p{margin-bottom:24px}
-.feat li{border-top:1px dashed var(--hair);padding:8px 0;font-size:.9375rem;line-height:1.6}
-.feat li b{font-weight:500;display:block}
-.feat li span{color:var(--ink-2);font-size:.875rem}
-/* 図版：本文と同じ 8 列に揃える。縦長は 2 列ずつ同じ大きさで 1 行に並べる */
-.plates{position:relative;view-timeline:--plates;grid-column:1/9;margin-top:64px;padding-top:16px;border-top:1px solid var(--rule);display:grid;grid-template-columns:repeat(8,minmax(0,1fr));column-gap:var(--col-gap);row-gap:32px;align-items:start}
-.plates figure{min-width:0;grid-column:span 2}
-.plates figcaption{font-size:.8125rem;line-height:1.6;margin-top:8px;display:grid;grid-template-columns:2.2em 1fr}
-.plates .wide{grid-column:span 4}
-.plates .full{grid-column:1/9}
-.plates .tbl{grid-column:span 6;align-self:end}
-
-/* ===== Photo band：作品の境目に入れる写真の帯（装飾）。画面幅いっぱい、上下は罫線で切る ===== */
-.band{position:relative;height:clamp(40px,5vw,72px);border-top:1px solid var(--rule);overflow:clip}
-/* 画像は帯の 5 倍の高さ。静止時は中央を見せる */
-.band img{position:absolute;left:0;top:0;width:100%;height:500%;object-fit:cover;transform:translateY(-40%);filter:grayscale(1) contrast(1.08)}
-@media (prefers-color-scheme: dark){.band img{filter:grayscale(1) contrast(1.08) brightness(.8)}}
-/* わずかなパララックス：帯が画面を通過する間に、画像を帯の高さ 4 倍ぶん動かす。対応ブラウザのみ、動きを減らす設定では止める */
-@keyframes band-drift{from{transform:translateY(0)}to{transform:translateY(-80%)}}
-@supports (animation-timeline: view()){
-  @media (prefers-reduced-motion: no-preference){
-    .band img{animation:band-drift linear both;animation-timeline:view()}
-  }
-}
-
-/* ===== Scroll-linked motion =====
-   動きはすべて既存の構造（切られた文字・罫線・写真の帯）から起こす。
-   スクロールに連動するだけで、勝手に動き続けるものは作らない。動きを減らす設定では最終状態で止める。 */
-@keyframes num-in{from{-webkit-mask-position:0% 0;mask-position:0% 0}to{-webkit-mask-position:100% 0;mask-position:100% 0}}
-@keyframes title-sink{from{transform:none}to{transform:translateY(58%)}}
-@keyframes rule-draw{from{transform:scaleX(0)}to{transform:scaleX(1)}}
-@supports (animation-timeline: view()){
-  @media (prefers-reduced-motion: no-preference){
-    /* 番号を 2 層で現す。切り口（レールの縦線）の側から左へワイプし、
-       境目の帯にだけ大きくぼかした層を重ねる。境目が通り過ぎた所はシャープな数字が残る */
-    /* 目次の番号：選択すると切り口から現れ直す（0.6 秒） */
-    html.js .toc .no > b{--m:linear-gradient(to right,transparent 0 54%,#000 57% 100%);-webkit-mask-image:var(--m);mask-image:var(--m);-webkit-mask-size:300% 100%;mask-size:300% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:100% 0;mask-position:100% 0}
-    html.js .toc a:hover .no > b,html.js .toc a:focus-visible .no > b{animation:toc-in .6s cubic-bezier(.25,.6,.2,1) both}
-    @keyframes toc-in{from{-webkit-mask-position:0% 0;mask-position:0% 0}to{-webkit-mask-position:100% 0;mask-position:100% 0}}
-    html.js .cut .no{position:relative;--m:linear-gradient(to right,transparent 0 54%,#000 57% 100%);-webkit-mask-image:var(--m);mask-image:var(--m);-webkit-mask-size:300% 100%;mask-size:300% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:0% 0;mask-position:0% 0;transition:-webkit-mask-position 1.8s cubic-bezier(.25,.6,.2,1),mask-position 1.8s cubic-bezier(.25,.6,.2,1)}
-    /* ぼかした層は番号の外（.cut の疑似要素）に置く。番号のマスクの内側に置くと、にじみが番号の箱で切れる */
-    .cut{position:relative}
-    /* 時間で再生する：番号が画面に入るたびに 1.8 秒かけて現れる（スクロール量に連動させると、移動してきた時点で完了していて気づかない） */
-    html.js .cut.in .no,html.js .cut.in::before{-webkit-mask-position:100% 0;mask-position:100% 0}
-    html.js .cut::before{content:attr(data-n);position:absolute;top:-40px;bottom:-40px;left:-40px;right:calc(-.24em - 40px);padding:40px;font-family:var(--display);font-weight:800;font-size:clamp(160px,23vw,300px);line-height:.74;letter-spacing:-.04em;text-align:right;white-space:nowrap;color:var(--ink);filter:blur(18px);--b:linear-gradient(to right,transparent 0 40%,#000 49% 56%,transparent 66% 100%);-webkit-mask-image:var(--b);mask-image:var(--b);-webkit-mask-size:300% 100%;mask-size:300% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:0% 0;mask-position:0% 0;transition:-webkit-mask-position 1.8s cubic-bezier(.25,.6,.2,1),mask-position 1.8s cubic-bezier(.25,.6,.2,1)}
-    /* 「Portfolio」がスクロールにつれて年表の罫線の下へ沈む */
-    .cover h1 span{animation:title-sink linear both;animation-timeline:scroll(root);animation-range:0 70vh}
-    /* 図版の上の罫線が左から右へ引かれる */
-    .plates{border-top-color:transparent}
-    .plates::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--rule);transform-origin:left;animation:rule-draw linear both;animation-range:cover 0% cover 12%}
-    .plates::before{animation-timeline:--plates;animation-range:cover 0% cover 25%}
-  }
-}
-/* 網点の帯（JS が有効なときだけ canvas に置き換える） */
-.band canvas{position:absolute;left:0;width:100%;pointer-events:none}
-.band.ht{overflow:visible}
-.band.ht img{visibility:hidden}
-.band.ht .ht-dots{top:0;height:100%}
-.band.ht .ht-sand{top:-120px;height:calc(100% + 240px);z-index:2}
-
-/* 扉の「Portfolio」の砂：罫線をくぐった部分が砂粒になってこぼれる（canvas は見た目だけ） */
-.sift{position:absolute;left:0;width:100%;pointer-events:none;z-index:1}
-
-/* ===== Contact ===== */
-.contact{position:relative;border-top:1px solid var(--rule);padding-block:32px 48px;font-size:.9375rem}
-/* 署名の「龍」：自筆の書。ページで一点だけ置く。色は文字色に合わせる（SVG はマスクとして使う） */
-.sign{width:82px;height:98px;margin:0 0 16px auto;background:var(--ink);-webkit-mask:url(./images/ryu.svg) center/contain no-repeat;mask:url(./images/ryu.svg) center/contain no-repeat}
-.gather{position:absolute;left:0;width:100%;pointer-events:none;z-index:1}
-.contact .a{grid-column:1/9}.contact .c{grid-column:9/13;text-align:right}
-.contact h2{font-size:1rem;font-weight:700;margin-bottom:8px}
-
-/* ===== Responsive ===== */
-@media (max-width:860px){
-  .cover .intro,.cover .career{grid-column:1/13}
-  .cover .career{margin-top:40px}
-  .timeline ol{grid-template-columns:1fr 1fr;row-gap:16px}
-  .timeline li:nth-child(odd){border-left:0;padding-left:0}
-  .toc a{grid-template-columns:2.5em 1fr auto;row-gap:8px}
-  .toc .no{grid-column:1;grid-row:1/3;font-size:1.75rem}.toc .t{grid-column:2/4}
-  .toc .d{grid-column:2/3}.toc .p{grid-column:3;grid-row:2}
-  .toc .go{display:none}
-  .rail{grid-column:1/13;position:static;display:grid;grid-template-columns:1fr auto;column-gap:16px;align-items:end;margin-top:40px;border-right:0}
-  .cut{grid-column:1;grid-row:1;width:58%;border-right:1px solid var(--rule)}.cut .no,.cut::before{font-size:160px}
-  .rail .of{grid-column:1;grid-row:2}.rail > :not(.cut){margin-right:0}
-  .rail .app{width:72px;margin-top:0;grid-row:1/3;grid-column:2;justify-self:end;align-self:end}
-  .spec{grid-column:1/3}
-  .main{display:contents}
-  .ttl{order:1;margin-top:32px}.rail{order:2}.body{order:3}.feat{order:4}.plates{order:5}
-  .ttl,.body,.feat,.plates{grid-column:1/13}
-  .plates{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .plates figure,.plates .wide{grid-column:span 1}
-  .plates .full,.plates .tbl{grid-column:1/3}
-    .contact .a,.contact .c{grid-column:1/13;text-align:left;margin-bottom:16px}
-  .sign{margin-left:0}
-}
-@media (prefers-reduced-motion:reduce){
-  html{scroll-behavior:auto}
-  *{transition:none !important}
-}
-</style>
+<link rel="stylesheet" href="./css/tokens.css">
+<link rel="stylesheet" href="./css/portfolio.css">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
@@ -293,7 +72,6 @@ html.js .head .home.off{visibility:hidden}
       <button type="button" data-f="all" aria-pressed="true">すべて</button>
       <button type="button" data-f="app" aria-pressed="false">iOS / macOS アプリ</button>
       <button type="button" data-f="figma" aria-pressed="false">Figma プラグイン</button>
-      <span class="count label" aria-live="polite"><span id="count">8</span> 件</span>
     </div>
     <ol class="toc">
       <li data-k="app"><a href="#marga"><span class="no num"><b>01</b></span><span class="t"><img class="ico" src="./marga/images/icon.png" width="512" height="512" alt="">Marga</span><span class="d">バイクツーリングの記録と管理</span><span class="p"><span class="label">iOS · watchOS</span>App Store</span><span class="go" aria-hidden="true">→</span></a></li>
@@ -661,19 +439,24 @@ html.js .head .home.off{visibility:hidden}
 <div class="band" aria-hidden="true"><img src="./images/photos/band-01.jpg" width="2400" height="800" alt="" loading="lazy"></div>
 <footer id="contact" class="contact" aria-labelledby="contact-h">
   <div class="grid">
-    <div class="a"><h2 id="contact-h">Contact</h2><p>rashers.basho_6a [at] icloud.com<br><span class="label">[at] を @ に置き換えてください</span></p></div>
+    <div class="a"><h2 id="contact-h">Contact</h2><p>rashers.basho_6a [at] icloud.com</p></div>
     <div class="c"><div class="sign" aria-hidden="true"></div><p class="label">© 2026 Ryu Kaneko</p></div>
   </div>
 </footer>
 
 <script>
 (function(){
-  var btns=document.querySelectorAll('.filters button'), rows=document.querySelectorAll('.toc li'), c=document.getElementById('count');
-  btns.forEach(function(b){b.addEventListener('click',function(){
+  var btns=document.querySelectorAll('.filters button'), rows=document.querySelectorAll('.toc li');
+  /* 各ボタンに、その分類の件数を「名前 (N)」で添える */
+  btns.forEach(function(b){
     var f=b.dataset.f,n=0;
+    rows.forEach(function(r){if(f==='all'||r.dataset.k===f)n++});
+    b.textContent+=' ('+n+')';
+  });
+  btns.forEach(function(b){b.addEventListener('click',function(){
+    var f=b.dataset.f;
     btns.forEach(function(x){x.setAttribute('aria-pressed',x===b)});
-    rows.forEach(function(r){var show=f==='all'||r.dataset.k===f;r.hidden=!show;if(show)n++});
-    c.textContent=n;
+    rows.forEach(function(r){r.hidden=!(f==='all'||r.dataset.k===f)});
   })});
 })();
 </script>

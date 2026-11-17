@@ -28,6 +28,20 @@ description: このポートフォリオ（index.html と各作品ページ）�
 - `prefers-reduced-motion` で動きをなくす
 - 375px 幅で横スクロールを出さない
 
+## デザインシステム（実装）
+
+- 値はすべて `css/tokens.css` に置き、`css/portfolio.css` はそこから選ぶ。CSS に数値を直接書かない（例外：罫線で文字を切る位置・canvas の大きさなど、その部品だけの調整値）
+- 新しい値が要るときは、先に tokens.css に名前を付けて足し、この節に書く。既存の段階で足りるなら足さない
+- トークンの段階
+  - 色：`--paper` `--ink` `--ink-2` `--rule` `--hair` `--surface`（ライト／ダーク両方を定義。JS の canvas も `--ink` を読む）
+  - 文字：`--fs-xs`(13) `--fs-sm`(14) `--fs-md`(15) `--fs-base`(16) `--fs-lg`(17) `--fs-xl`(18)、見出しは `--fs-lead` `--fs-toc-no` `--fs-toc-title` `--fs-section` `--fs-work` `--fs-numeral`
+  - 太さ `--fw-*`、行間 `--lh-body`(1.7) `--lh-snug`(1.6) `--lh-tight`(1.5) `--lh-heading`(.9) `--lh-cut`(.74)、字間 `--ls-label` `--ls-heading` `--ls-cut`
+  - 余白：`--sp-1`〜`--sp-8`（4 / 8 / 16 / 24 / 32 / 40 / 48 / 64）、区画の上下 `--sp-section`
+  - グリッド `--gutter` `--col-gap`、罫線 `--line`、フォーカス `--focus-ring`、角丸 `--r-sm` `--r-md` `--r-lg` `--r-pill` `--r-app`、押せる大きさ `--hit`
+  - 動き：`--dur-fast`(.15s) `--dur-base`(.2s) `--dur-reveal`(.6s) `--dur-numeral`(1.8s)、`--ease-reveal`
+- 部品：フィルターボタン（ピル・件数を「名前 (N)」で添える）、目次の行、見開き（レール・切られた番号・データ表・図版）、写真の帯、ラベル、フォーカスリング
+- 見本帳は Artifact「Portfolio Design System」。トークンや部品を変えたら見本帳も更新する
+
 ## レイアウト
 
 - 12 カラムグリッド。左右の余白は clamp(16px, 3vw, 40px)
