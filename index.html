@@ -11,8 +11,8 @@
 <meta name="color-scheme" content="light dark">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<!-- Geist / Zen Kaku Gothic New: SIL Open Font License 1.1 -->
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<!-- Geist / Geist Mono / Zen Kaku Gothic New: SIL Open Font License 1.1 -->
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;800&family=Geist+Mono:wght@400&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./css/tokens.css">
 <link rel="stylesheet" href="./css/portfolio.css">
 <script>document.documentElement.classList.add('js')</script>
@@ -446,6 +446,19 @@
   </div>
 </footer>
 
+<!-- 資料のシート：見開きの「資料」から md を読み込み、本文側に重ねて表示する。JS が無いときはリンクが md を直接開く -->
+<dialog class="sheet" id="sheet" aria-labelledby="sheet-h">
+  <div class="sheet-bar">
+    <p class="label"><span class="num" id="sheet-no"></span> 資料</p>
+    <button type="button" class="pill" data-sheet-close>閉じる</button>
+  </div>
+  <header class="sheet-head">
+    <h2 id="sheet-h" tabindex="-1"></h2>
+    <div class="sheet-tabs" role="group" aria-label="資料の種類"></div>
+  </header>
+  <div class="doc" id="sheet-doc" aria-live="polite"></div>
+</dialog>
+
 <script>
 (function(){
   var btns=document.querySelectorAll('.filters button'), rows=document.querySelectorAll('.toc li');
@@ -754,6 +767,123 @@
   }
   function req(){ if (!raf) raf=requestAnimationFrame(upd) }
   upd(); addEventListener('scroll',req,{passive:true}); addEventListener('resize',req);
+})();
+</script>
+<script src="./js/vendor/marked.min.js"></script>
+<script>
+/* ===== 資料のシート =====
+   見開きの「資料」のリンク（.md）を押すと、md を読み込んで HTML に組み、シートに表示する。
+   URL は #作品/資料（例：#marga/process）。直リンク・ブラウザの「戻る」で開け閉めできる。
+   JS が無い・読み込みに失敗したときは、リンク先の md をそのまま開ける */
+(function(){
+  var dlg=document.getElementById('sheet');
+  if (!dlg || !dlg.showModal || !window.marked) return;
+  var h=document.getElementById('sheet-h'), no=document.getElementById('sheet-no'), doc=document.getElementById('sheet-doc'), tabs=dlg.querySelector('.sheet-tabs');
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)');
+  var works={}, cache={}, cur=null, opener=null, pushed=false, seq=0;
+
+  /* 見開きごとに、作品名・番号・資料のリンクを集める */
+  document.querySelectorAll('.work').forEach(function(w){
+    var links=w.querySelectorAll('.spec a[href$=".md"]'); if (!links.length) return;
+    var docs=[];
+    links.forEach(function(a){
+      var key=a.getAttribute('href').split('/').pop().replace(/\.md$/,'');
+      docs.push({key:key,label:a.textContent,href:a.getAttribute('href'),link:a});
+      a.addEventListener('click',function(e){
+        if (e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||e.button!==0) return;
+        e.preventDefault(); opener=a; show(w.id,key,true);
+      });
+    });
+    works[w.id]={id:w.id,name:w.querySelector('h2').textContent,no:(w.querySelector('.cut')||{}).dataset.n||'',docs:docs};
+  });
+
+  /* 絵文字は表示しない。表の可否を表す ✅ / ❌ だけは文字の ○ / × に置き換える */
+  function clean(t){
+    return t.replace(/\u2705/g,'○').replace(/\u274C/g,'×')
+      .replace(/[ \t]?(?:\p{Emoji_Presentation}|\p{Extended_Pictographic}\uFE0F)(?:\u200D(?:\p{Emoji_Presentation}|\p{Extended_Pictographic}\uFE0F?))*[ \t]?/gu,function(m){return /^[ \t].*[ \t]$/.test(m)?' ':''});
+  }
+  /* md を HTML に組む。h1 は外し（シートの見出しと重なる）、残りの見出しは 1 段下げる */
+  function render(md,base){
+    var box=document.createElement('div');
+    box.innerHTML=marked.parse(clean(md));
+    var h1=box.querySelector('h1'); if (h1) h1.remove();
+    box.querySelectorAll('h2,h3,h4,h5').forEach(function(x){
+      var y=document.createElement('h'+(+x.tagName[1]+1)); y.innerHTML=x.innerHTML; x.replaceWith(y);
+    });
+    box.querySelectorAll('table').forEach(function(t){var d=document.createElement('div');d.className='tbl-wrap';t.replaceWith(d);d.appendChild(t)});
+    box.querySelectorAll('img[src],a[href]').forEach(function(x){
+      var at=x.tagName==='IMG'?'src':'href', v=x.getAttribute(at);
+      if (!/^(#|[a-z]+:)/i.test(v)) x.setAttribute(at,new URL(v,base).href);
+    });
+    return box;
+  }
+  function load(w,d){
+    var my=++seq, url=new URL(d.href,location.href).href;
+    doc.innerHTML='<p class="state label">読み込み中</p>';
+    (cache[url]||(cache[url]=fetch(url).then(function(r){if(!r.ok)throw r.status;return r.text()}))).then(function(t){
+      if (my!==seq) return;
+      var box=render(t,url); doc.replaceChildren.apply(doc,box.childNodes);
+    }).catch(function(){
+      delete cache[url]; if (my!==seq) return;
+      doc.innerHTML='<p class="state">読み込めませんでした。<a href="'+d.href+'">md ファイルを開く</a></p>';
+    });
+  }
+
+  function show(id,key,push){
+    var w=works[id]; if (!w) return;
+    var d=w.docs.filter(function(x){return x.key===key})[0]||w.docs[0];
+    var same=cur&&cur.w===w;
+    if (cur&&cur.w===w&&cur.d===d&&dlg.open) return;
+    cur={w:w,d:d};
+    var hash='#'+w.id+'/'+d.key;
+    if (push){ if (dlg.open) history.replaceState({sheet:1},'',hash); else { history.pushState({sheet:1},'',hash); pushed=true } }
+    no.textContent=w.no; h.textContent=w.name;
+    if (!same) tabs.replaceChildren.apply(tabs,w.docs.map(function(x){
+      var b=document.createElement('button'); b.type='button'; b.className='pill'; b.textContent=x.label; b.dataset.key=x.key;
+      b.addEventListener('click',function(){show(w.id,x.key,true)}); return b;
+    }));
+    tabs.querySelectorAll('button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.key===d.key)});
+    load(w,d);
+    if (!dlg.open){
+      if (!opener) opener=d.link;
+      dlg.showModal(); dlg.scrollTop=0; void dlg.offsetWidth; dlg.classList.add('open'); h.focus();
+    } else dlg.scrollTop=0;
+  }
+  function hide(){
+    if (!dlg.open) return;
+    var back=opener; opener=null; cur=null; pushed=false;
+    dlg.classList.remove('open');
+    var done=function(){ if (dlg.classList.contains('open')) return; dlg.close(); if (back) back.focus({preventScroll:true}) };
+    if (reduce.matches) done();
+    else { var t=setTimeout(done,600); dlg.addEventListener('transitionend',function f(e){ if (e.target!==dlg) return; dlg.removeEventListener('transitionend',f); clearTimeout(t); done() }) }
+  }
+  /* 閉じる：自分で積んだ履歴なら戻る（popstate で閉じる）。直リンクで開いたときは作品の見開きの URL に置き換える */
+  function requestClose(){
+    if (pushed&&history.state&&history.state.sheet) history.back();
+    else { if (cur) history.replaceState(null,'','#'+cur.w.id); hide() }
+  }
+  dlg.querySelector('[data-sheet-close]').addEventListener('click',requestClose);
+  dlg.addEventListener('cancel',function(e){e.preventDefault();requestClose()});
+  dlg.addEventListener('click',function(e){
+    if (e.target!==dlg) return;
+    var r=dlg.getBoundingClientRect(); if (e.clientX<r.left) requestClose();
+  });
+  /* 資料の中から、同じ作品のもう 1 つの資料へのリンクはシートの中で切り替える */
+  doc.addEventListener('click',function(e){
+    var a=e.target.closest('a[href$=".md"]'); if (!a||!cur) return;
+    var key=a.getAttribute('href').split('/').pop().replace(/\.md$/,'');
+    if (cur.w.docs.some(function(x){return x.key===key})){e.preventDefault();show(cur.w.id,key,true)}
+  });
+
+  function route(){
+    var m=location.hash.match(/^#([\w-]+)\/([\w-]+)$/);
+    if (m&&works[m[1]]) return {id:m[1],key:m[2]};
+  }
+  window.addEventListener('popstate',function(){
+    var r=route(); if (r) show(r.id,r.key,false); else hide();
+  });
+  var r=route();
+  if (r){ if ('scrollRestoration' in history) history.scrollRestoration='manual'; var a=document.getElementById(r.id); if (a) a.scrollIntoView({behavior:'instant'}); show(r.id,r.key,false) }
 })();
 </script>
 </body>

@@ -58,10 +58,10 @@ html.js .head .home.off{visibility:hidden}
 .sec-title .ja{font-size:var(--fs-md);color:var(--ink-2)}
 .purpose{grid-column:1/13;margin-top:var(--sp-3)}
 .filters{grid-column:1/13;display:flex;flex-wrap:wrap;gap:var(--sp-2);padding-block:var(--sp-3)}
-.filters button{font:inherit;font-size:var(--fs-sm);min-height:var(--hit);background:none;color:var(--ink);border:var(--line) solid var(--rule);
+.filters button,.pill{font:inherit;font-size:var(--fs-sm);min-height:var(--hit);background:none;color:var(--ink);border:var(--line) solid var(--rule);
   padding:var(--sp-2) var(--sp-3);border-radius:var(--r-pill);cursor:pointer;transition:background-color var(--dur-fast)}
-.filters button:hover{background:var(--surface)}
-.filters button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.filters button:hover,.pill:hover{background:var(--surface)}
+.filters button[aria-pressed="true"],.pill[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
 .toc{grid-column:1/13}
 .toc li{border-bottom:var(--line) dashed var(--hair)}
 .toc li[hidden]{display:none}
@@ -174,6 +174,56 @@ html.js .head .home.off{visibility:hidden}
 /* 扉の「Portfolio」の砂：罫線をくぐった部分が砂粒になってこぼれる（canvas は見た目だけ） */
 .sift{position:absolute;left:0;width:100%;pointer-events:none;z-index:1}
 
+/* ===== Sheet：資料（md）を見開きの本文側に重ねる =====
+   左端はレールの縦線（3 列目の終わり）にそろえ、文字は見開きの本文（5 列目）の頭にそろえる。
+   開閉は画面遷移なので、右から入り右へ抜ける。背後の見開きは動かさず、不透明度だけを下げる */
+.sheet{--c:calc((100vw - 2 * var(--gutter) - 11 * var(--col-gap)) / 12);
+  position:fixed;inset:0 0 0 auto;width:calc(100vw - var(--gutter) - 3 * var(--c) - 2 * var(--col-gap));max-width:none;height:100%;max-height:none;margin:0;
+  border:0;border-left:var(--line) solid var(--rule);background:var(--paper);color:var(--ink);
+  padding:0 var(--gutter) var(--sp-section) calc(var(--c) + 2 * var(--col-gap));overflow-y:auto;overscroll-behavior:contain;
+  transform:translateX(100%);transition:transform var(--dur-sheet) var(--ease-sheet)}
+.sheet.open{transform:none}
+.sheet::backdrop{background:var(--scrim);opacity:0;transition:opacity var(--dur-sheet) var(--ease-sheet)}
+.sheet.open::backdrop{opacity:1}
+html:has(.sheet[open]){overflow:hidden}
+.sheet-bar{position:sticky;top:0;z-index:1;display:flex;justify-content:space-between;align-items:center;gap:var(--sp-3);
+  background:var(--paper);border-bottom:var(--line) solid var(--rule);padding-block:var(--sp-1)}
+.sheet-head{padding-top:var(--sp-6)}
+.sheet-head h2{font-family:var(--display);font-weight:var(--fw-medium);font-size:var(--fs-toc-title);line-height:1;letter-spacing:var(--ls-heading)}
+.sheet-head h2:focus{outline:0}
+.sheet-head h2:focus-visible{outline:var(--focus-ring) solid var(--ink)}
+.sheet-tabs{display:flex;flex-wrap:wrap;gap:var(--sp-2);margin-top:var(--sp-4)}
+
+/* 資料の本文。md の見出しは 1 段下げて組む（シートの見出しが h2） */
+.doc{padding-top:var(--sp-2);overflow-wrap:break-word}
+.doc > *{max-width:40em}
+.doc > pre,.doc > .tbl-wrap{max-width:none}
+.doc h3{font-size:var(--fs-doc);font-weight:var(--fw-bold);line-height:var(--lh-tight);margin-top:var(--sp-8);padding-top:var(--sp-3);border-top:var(--line) solid var(--rule)}
+.doc > h3:first-child{margin-top:var(--sp-6)}
+.doc h4{font-size:var(--fs-xl);font-weight:var(--fw-bold);line-height:var(--lh-tight);margin-top:var(--sp-6)}
+.doc h5,.doc h6{font-size:var(--fs-base);font-weight:var(--fw-bold);line-height:var(--lh-tight);margin-top:var(--sp-5)}
+.doc h3 + *,.doc h4 + *,.doc h5 + *{margin-top:var(--sp-3)}
+.doc p,.doc ul,.doc ol,.doc pre,.doc .tbl-wrap,.doc blockquote{margin-top:var(--sp-3)}
+.doc hr{display:none}
+.doc ul > li{position:relative;padding-left:1.2em}
+.doc ul > li::before{content:"";position:absolute;left:.3em;top:.8em;width:.35em;height:var(--line);background:var(--ink)}
+.doc ol{list-style:decimal;padding-left:1.6em}
+.doc ol > li::marker{font-family:var(--display);color:var(--ink-2)}
+.doc li + li{margin-top:var(--sp-1)}
+.doc li > ul,.doc li > ol{margin-top:var(--sp-1)}
+.doc strong{font-weight:var(--fw-bold)}
+.doc a{text-underline-offset:3px}
+.doc blockquote{border-left:var(--line) solid var(--rule);padding-left:var(--sp-3);color:var(--ink-2)}
+.doc code{font-family:var(--mono);font-size:.875em;background:var(--surface);border-radius:var(--r-sm);padding:.1em .35em}
+.doc pre{background:var(--surface);border-radius:var(--r-md);padding:var(--sp-3);overflow-x:auto;font-size:var(--fs-sm);line-height:var(--lh-snug)}
+.doc pre code{background:none;padding:0;font-size:inherit;white-space:pre}
+/* 表：見開きのデータ表と同じく、見出しの下は実線、行の区切りは破線 */
+.doc .tbl-wrap{overflow-x:auto}
+.doc table{border-collapse:collapse;width:100%;font-size:var(--fs-sm);line-height:var(--lh-snug)}
+.doc th{text-align:left;font-weight:var(--fw-medium);color:var(--ink-2);border-bottom:var(--line) solid var(--rule);padding:var(--sp-2) var(--sp-3) var(--sp-2) 0;white-space:nowrap}
+.doc td{border-bottom:var(--line) dashed var(--hair);padding:var(--sp-2) var(--sp-3) var(--sp-2) 0;vertical-align:top}
+.doc .state{color:var(--ink-2);margin-top:var(--sp-5)}
+
 /* ===== Contact ===== */
 .contact{position:relative;border-top:var(--line) solid var(--rule);padding-block:var(--sp-5) var(--sp-7);font-size:var(--fs-md)}
 /* 署名の「龍」：自筆の書。ページで一点だけ置く。色は文字色に合わせる（SVG はマスクとして使う） */
@@ -205,8 +255,9 @@ html.js .head .home.off{visibility:hidden}
   .plates .full,.plates .tbl{grid-column:1/3}
     .contact .a,.contact .c{grid-column:1/13;text-align:left;margin-bottom:var(--sp-3)}
   .sign{margin-left:0}
+  .sheet{width:100%;border-left:0;padding-inline:var(--gutter)}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  *{transition:none !important}
+  *,.sheet::backdrop{transition:none !important}
 }
