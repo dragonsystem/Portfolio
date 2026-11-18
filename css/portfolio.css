@@ -232,9 +232,12 @@ html:has(.sheet[open]){overflow:hidden}
 .doc-video-info{flex:1 1 auto;min-width:0;max-width:30em}
 /* 幅は高さから決める（画面の高さに収める）。列が元の動画の幅（600px）に広がって右に空きが出ないよう、幅を明示する */
 .doc-video video{display:block;width:max(calc(var(--video-min-h) * 600 / 1304), calc((100dvh - var(--head-h) - 2 * var(--sp-section)) * 600 / 1304));max-width:100%;height:auto;aspect-ratio:600 / 1304;background:var(--surface);border-radius:var(--r-lg)}
-/* どの状態を切り取った動画か（本文の大きさ）→ 録画の条件（補足）→ 場面の一覧 */
+/* 見出し（ラベル）→ どの流れを切り取った動画か（本文の大きさ）→ 場面の一覧 → 補足（注釈の大きさ） */
+.doc .doc-video-info h3{font-family:var(--display);font-size:var(--fs-xs);font-weight:var(--fw-medium);line-height:var(--lh-tight);margin-top:0;padding-top:0;border-top:0}
+.doc .doc-video-info h3 + .about{margin-top:var(--sp-2)}
 .doc-video-info .about{font-size:var(--fs-base);line-height:var(--lh-body);color:var(--ink)}
-.doc-video-info .note{font-size:var(--fs-sm);line-height:var(--lh-snug);color:var(--ink-2);margin-top:var(--sp-3)}
+.doc-video-info .note{font-size:var(--fs-xs);line-height:var(--lh-snug);color:var(--ink-2);margin-top:var(--sp-2)}
+.doc .doc-video-scenes + .note{margin-top:var(--sp-4)}
 .doc-video-info > :first-child{margin-top:0}
 /* 場面：同じ区画の中の項目なので破線で区切る。今の場面は文字を濃くする */
 .doc .doc-video-scenes{margin-top:var(--sp-4);border-top:var(--line) solid var(--rule);list-style:none;padding-left:0}

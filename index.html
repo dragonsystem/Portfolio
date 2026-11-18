@@ -18,8 +18,8 @@
 <!-- Geist / Geist Mono / Zen Kaku Gothic New: SIL Open Font License 1.1 -->
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;800&family=Geist+Mono:wght@400&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
 <!-- CSS を変えたら ?v= の日付を更新する（古い CSS が新しい HTML と組み合わさって崩れるのを防ぐ） -->
-<link rel="stylesheet" href="./css/tokens.css?v=20261118">
-<link rel="stylesheet" href="./css/portfolio.css?v=20261118">
+<link rel="stylesheet" href="./css/tokens.css?v=20261118b">
+<link rel="stylesheet" href="./css/portfolio.css?v=20261118b">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
@@ -102,7 +102,8 @@
 <!-- ===== 01 Marga ===== -->
 <!-- 資料のシートの動画：録画したときの状態と、場面ごとの開始時刻（秒） -->
 <script type="application/json" id="marga-video">
-{"about":"ツーリングを終えたあと、記録を見返す流れ。地図に過去のルートを重ね、一覧から 1 件を開き、行きたい場所と統計を確かめる。走行中の記録（記録ボタン、Apple Watch）とレシートの読み取りは含まない。",
+{"about":"ツーリングを終えたあと、記録を見返す流れ。地図に過去のルートを重ね、一覧から 1 件を開き、行きたい場所と統計を確かめる。",
+ "notes":["走行中の記録（記録ボタン、Apple Watch）とレシートの読み取りは含まない。"],
  "state":"iPhone 17 Pro のシミュレーターで操作を録画。データは架空のもの（ツーリング 5 件、給油 5 件、行きたい場所 7 件）。",
  "scenes":[
   {"t":0,"title":"MAP","text":"過去 1 年のルートを強調して重ねた地図。丸は行きたい場所"},
@@ -161,7 +162,8 @@
 
 <!-- ===== 02 Suchi ===== -->
 <script type="application/json" id="suchi-video">
-{"about":"目的地を決めてナビを始め、走りながら矢印と距離を見る流れ。芦ノ湖の箱根町から大観山（約 2 km 先）へ向かう。走行中の部分は 3 倍速。道が曲がると、目的地までの直線距離が一時的に増えることもある。",
+{"about":"目的地を決めてナビを始め、走りながら矢印と距離を見る流れ。芦ノ湖の箱根町から大観山（約 2 km 先）へ向かう。",
+ "notes":["走行中の部分は 3 倍速。道が曲がると、目的地までの直線距離が一時的に増えることもある。"],
  "state":"iPhone 17 Pro のシミュレーターで操作を録画。位置は道路に沿って動かした架空の走行。シミュレーターには方位センサーがないため、端末は北を向いたままで、方位リングは回らない。",
  "scenes":[
   {"t":0,"title":"MAP","text":"目的地の検索。候補に直線距離と方角が出る"},
@@ -219,7 +221,8 @@
 
 <!-- ===== 03 Record Recorder ===== -->
 <script type="application/json" id="record-recorder-video">
-{"about":"登録したコレクションを眺め、1 枚を開き、並び替えと統計を確かめる流れ。ジャケットの撮影から自動入力（文字認識・バーコード → Discogs 検索）は含まない。",
+{"about":"登録したコレクションを眺め、1 枚を開き、並び替えと統計を確かめる流れ。",
+ "notes":["ジャケットの撮影から自動入力（文字認識・バーコード → Discogs 検索）は含まない。"],
  "state":"iPhone 17 Pro のシミュレーターで操作を録画。レコードとジャケットは架空のもの（Gemini で作成した 7 枚）。",
  "scenes":[
   {"t":0,"title":"コレクション","text":"ジャケットのグリッド。タイトル・アーティスト・年代・ジャンル"},
@@ -886,8 +889,9 @@
     /* 録画したときの状態と場面の一覧。場面を押すとその時刻から再生し、再生中は今の場面を示す */
     var info={}; try { info=JSON.parse(document.getElementById(d.link.dataset.video).textContent) } catch(e){}
     var side=document.createElement('figcaption'); side.className='doc-video-info';
+    /* 上から 見出し → 映っている流れ → 場面の一覧 → 補足（含まない操作など・録画の条件）。動画が 2 本以上になったら見出しに番号を付ける（Flow 01） */
+    var hd=document.createElement('h3'); hd.className='label'; hd.lang='en'; hd.textContent='Flow'; side.appendChild(hd);
     if (info.about){ var a=document.createElement('p'); a.className='about'; a.textContent=info.about; side.appendChild(a) }
-    if (info.state){ var c=document.createElement('p'); c.className='note'; c.textContent=info.state; side.appendChild(c) }
     var items=[];
     if (info.scenes&&info.scenes.length){
       var ol=document.createElement('ol'); ol.className='doc-video-scenes'; ol.setAttribute('aria-label','場面');
@@ -901,6 +905,7 @@
       });
       side.appendChild(ol);
     }
+    (info.notes||[]).concat(info.state?[info.state]:[]).forEach(function(t){ var c=document.createElement('p'); c.className='note'; c.textContent=t; side.appendChild(c) });
     fig.appendChild(side);
     function seek(t){
       var go=function(){ v.currentTime=t; v.play() };
