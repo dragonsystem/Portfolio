@@ -18,8 +18,8 @@
 <!-- Geist / Geist Mono / Zen Kaku Gothic New: SIL Open Font License 1.1 -->
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;800&family=Geist+Mono:wght@400&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
 <!-- CSS を変えたら ?v= の日付を更新する（古い CSS が新しい HTML と組み合わさって崩れるのを防ぐ） -->
-<link rel="stylesheet" href="./css/tokens.css?v=20261118b">
-<link rel="stylesheet" href="./css/portfolio.css?v=20261118b">
+<link rel="stylesheet" href="./css/tokens.css?v=20261118c">
+<link rel="stylesheet" href="./css/portfolio.css?v=20261118c">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
@@ -44,7 +44,7 @@
       <p class="name">Ryu Kaneko</p>
     </div>
     <div class="career">
-    <!-- 経歴の概要：職歴と同じく、広い画面では常に開き、860px 以下では畳んで「経歴 (N)」で開く。要約の文は畳まない -->
+    <!-- 経歴の概要と要約の文：職歴と同じく、広い画面では常に開き、860px 以下では畳んで「経歴 (N)」で開く -->
     <details class="fold roles-fold" open>
     <summary class="label">経歴</summary>
     <ol class="roles" aria-label="経歴の概要">
@@ -52,8 +52,8 @@
       <li><span class="num">2001</span><b>UI / Graphic Design</b><span class="label">Freelance</span></li>
       <li><span class="num">2014</span><b>UX / UI · Service Design</b><span class="label">In-house</span></li>
     </ol>
+    <p class="summary">ビジュアルデザインを学び、フリーランスの UI デザイナー、事業会社でインハウスのデザイナーとして働いてきました。</p>
     </details>
-      <p class="summary">ビジュアルデザインを学び、フリーランスの UI デザイナー、事業会社でインハウスのデザイナーとして働いてきました。</p>
     </div>
     <h1 id="title"><span>Portfolio</span></h1>
   </div>
@@ -83,8 +83,8 @@
     <p class="purpose">AI を理解するために個人開発した、iOS / macOS アプリと Figma プラグイン。</p>
     <div class="filters" role="group" aria-label="分類で絞り込み">
       <button type="button" data-f="all" aria-pressed="true">すべて</button>
-      <button type="button" data-f="app" aria-pressed="false">iOS / macOS アプリ</button>
-      <button type="button" data-f="figma" aria-pressed="false">Figma プラグイン</button>
+      <button type="button" data-f="app" aria-pressed="false"><span class="wide">iOS / macOS </span>アプリ</button>
+      <button type="button" data-f="figma" aria-pressed="false">Figma<span class="wide"> プラグイン</span></button>
     </div>
     <ol class="toc">
       <li data-k="app"><a href="#marga"><span class="no num"><b>01</b></span><span class="t"><img class="ico" src="./marga/images/icon.png" width="512" height="512" alt="">Marga</span><span class="d">バイクツーリングの記録と管理</span><span class="p"><span class="label">iOS · watchOS</span>App Store</span><span class="go" aria-hidden="true">→</span></a></li>
@@ -515,7 +515,7 @@
   btns.forEach(function(b){
     var f=b.dataset.f,n=0;
     rows.forEach(function(r){if(f==='all'||r.dataset.k===f)n++});
-    b.textContent+=' ('+n+')';
+    b.append(' ('+n+')');
   });
   btns.forEach(function(b){b.addEventListener('click',function(){
     var f=b.dataset.f;

@@ -64,6 +64,8 @@ html.js .head .home.off{visibility:hidden}
   padding:var(--sp-2) var(--sp-3);border-radius:var(--r-pill);cursor:pointer;transition:background-color var(--dur-fast)}
 .filters button:hover,.pill:hover{background:var(--surface)}
 .filters button[aria-pressed="true"],.pill[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+/* 3 つが 1 行に収まらない幅（約 500px 以下）では、ラベルを「アプリ」「Figma」に縮める。消した語は読み上げにも含めない */
+@media (max-width:520px){.filters .wide{display:none}}
 /* ボタンの種別：選択ボタン（ピル md、上）・切り替え（セグメント sm）・アイコンボタン（円 sm）・文字リンク。
    sm は見た目を --ctl-sm にし、押せる範囲は ::before で --hit まで広げる */
 .icon-btn{position:relative;display:inline-grid;place-items:center;width:var(--ctl-sm);height:var(--ctl-sm);padding:0;background:none;color:var(--ink);
