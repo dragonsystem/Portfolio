@@ -126,6 +126,7 @@ html.js .head .home.off{visibility:hidden}
 .ttl{grid-column:1/9}
 .work h2{font-family:var(--display);font-weight:var(--fw-medium);font-size:var(--fs-work);line-height:var(--lh-heading);letter-spacing:var(--ls-heading)}
 .work .sub{font-size:var(--fs-lead);margin-top:var(--sp-4);max-width:36em;word-break:auto-phrase;text-wrap:pretty}
+.work .sub .ph{display:inline-block}
 .work .origin{font-size:var(--fs-sm);color:var(--ink-2);margin-top:var(--sp-2)}
 .body{grid-column:1/5;margin-top:var(--sp-7)}
 .feat{grid-column:5/9;margin-top:var(--sp-7)}
