@@ -5,7 +5,9 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{background:var(--paper);color:var(--ink);font-family:var(--gothic);font-size:var(--fs-base);line-height:var(--lh-body);
-  font-feature-settings:"palt";-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  font-feature-settings:"palt";-webkit-font-smoothing:antialiased;overflow-x:clip}
+/* 横のはみ出しは hidden ではなく clip で隠す。hidden だと、シートを開いて html に overflow:hidden が付いたとき body 自身が
+   スクロールの箱になり、ヘッダーとレールの sticky が外れて背後のページが上へずれる。clip はスクロールの箱を作らない */
 a{color:inherit}
 img{display:block;max-width:100%;height:auto}
 ul,ol{list-style:none}
